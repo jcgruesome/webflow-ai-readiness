@@ -1,0 +1,227 @@
+/* ===== ReshapeX Brand Tokens ===== */
+:root {
+  /* Brand Colors */
+  --rx-deep-space: #0D1117;
+  --rx-slate: #1C2128;
+  --rx-electric-green: #73B400;
+  --rx-cyber-blue: #00D9FF;
+  --rx-volt-yellow: #FFE500;
+  --rx-hot-magenta: #FF006E;
+  --rx-neon-coral: #FF4D6D;
+  --rx-white: #FFFFFF;
+  --rx-steel-gray: #8B9AAD;
+
+  /* Brand Typography */
+  --rx-font-family: 'General Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ===== Gradient Text Utility ===== */
+.rx-gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  background-color: transparent;
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 transparent !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Anti-halo on dark backgrounds */
+.bg-deep-space .rx-gradient-text,
+.rx-dark .rx-gradient-text {
+  -webkit-text-stroke: 0.25px rgba(13, 17, 23, 0.35);
+}
+
+/* ===== Brand Gradient Combinations ===== */
+
+/* Electric Green → Volt Yellow (Primary) */
+.rx-gc-green-yellow {
+  background-image: linear-gradient(135deg, var(--rx-electric-green), var(--rx-volt-yellow));
+}
+
+/* Cyber Blue → White */
+.rx-gc-blue-white {
+  background-image: linear-gradient(135deg, var(--rx-cyber-blue), var(--rx-white));
+}
+
+/* Hot Magenta → Electric Green */
+.rx-gc-magenta-green {
+  background-image: linear-gradient(135deg, var(--rx-hot-magenta), var(--rx-electric-green));
+}
+
+/* Cyber Blue → Neon Coral */
+.rx-gc-blue-coral {
+  background-image: linear-gradient(135deg, var(--rx-cyber-blue), var(--rx-neon-coral));
+}
+
+/* Electric Green → Cyber Blue */
+.rx-gc-green-blue {
+  background-image: linear-gradient(135deg, var(--rx-electric-green), var(--rx-cyber-blue));
+}
+
+/* ===== Link Safety ===== */
+a .rx-gradient-text {
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+/* ===== ReshapeX Theme Overrides ===== */
+.rx-theme {
+  background-color: var(--rx-deep-space);
+  color: var(--rx-white);
+  font-family: var(--rx-font-family);
+}
+
+/* Cards with ReshapeX styling */
+.rx-card {
+  background: var(--rx-slate);
+  border: 1px solid rgba(139, 154, 173, 0.15);
+  border-radius: 12px;
+}
+
+.rx-card:hover {
+  border-color: var(--rx-electric-green);
+}
+
+/* Primary Button */
+.rx-btn-primary {
+  background: var(--rx-electric-green);
+  color: var(--rx-deep-space);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.rx-btn-primary:hover {
+  background: #5C9000;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(115, 180, 0, 0.3);
+}
+
+/* Secondary Button */
+.rx-btn-secondary {
+  background: transparent;
+  color: var(--rx-steel-gray);
+  border: 1px solid var(--rx-steel-gray);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.rx-btn-secondary:hover {
+  color: var(--rx-electric-green);
+  border-color: var(--rx-electric-green);
+}
+
+/* Gradient Border Cards */
+.rx-gradient-border {
+  position: relative;
+  background: var(--rx-slate);
+  border-radius: 12px;
+  padding: 2px;
+  background-clip: padding-box;
+}
+
+.rx-gradient-border::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  margin: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--rx-electric-green), var(--rx-cyber-blue));
+}
+
+/* Progress Bar */
+.rx-progress {
+  background: rgba(139, 154, 173, 0.2);
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.rx-progress-fill {
+  background: linear-gradient(90deg, var(--rx-electric-green), var(--rx-cyber-blue));
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Score Badge */
+.rx-score-badge {
+  background: linear-gradient(135deg, var(--rx-electric-green), var(--rx-cyber-blue));
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.rx-score-badge-inner {
+  background: var(--rx-deep-space);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Utility Classes */
+.rx-text-steel {
+  color: var(--rx-steel-gray);
+}
+
+.rx-text-green {
+  color: var(--rx-electric-green);
+}
+
+.rx-text-blue {
+  color: var(--rx-cyber-blue);
+}
+
+.rx-bg-deep-space {
+  background-color: var(--rx-deep-space);
+}
+
+.rx-bg-slate {
+  background-color: var(--rx-slate);
+}
+
+/* Glow Effects */
+.rx-glow-green {
+  box-shadow: 0 0 30px rgba(115, 180, 0, 0.3);
+}
+
+.rx-glow-blue {
+  box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+}
+
+/* Animated Gradient Background */
+@keyframes rx-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.rx-animated-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--rx-electric-green),
+    var(--rx-cyber-blue),
+    var(--rx-hot-magenta),
+    var(--rx-volt-yellow)
+  );
+  background-size: 400% 400%;
+  animation: rx-gradient-shift 15s ease infinite;
+}

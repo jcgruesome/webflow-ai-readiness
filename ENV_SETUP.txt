@@ -1,0 +1,61 @@
+# Environment Variables Setup
+
+## Required Environment Variables
+
+Add these to your `.env` file for local development:
+
+```bash
+# HubSpot Integration
+HUBSPOT_ACCESS_TOKEN=your_private_app_token_here
+
+# Webflow (if using CMS features)
+WEBFLOW_API_HOST=https://api.webflow.com
+WEBFLOW_SITE_API_TOKEN=your_webflow_site_token_here
+WEBFLOW_CMS_SITE_API_TOKEN=your_webflow_cms_token_here
+```
+
+## How to Get Your HubSpot Token
+
+1. Log into your HubSpot account
+2. Go to Settings → Integrations → Private Apps
+3. Click "Create a private app" (or use an existing one)
+4. Give it a name like "AI Readiness Assessment"
+5. Under "Scopes", grant:
+   - `crm.objects.contacts.read`
+   - `crm.objects.contacts.write`
+   - `crm.objects.companies.read`
+   - `crm.objects.companies.write`
+6. Click "Create app"
+7. Copy the access token (starts with `pat-na1-`)
+8. Add it to your `.env` file
+
+## Production Deployment (Cloudflare Workers)
+
+For production, add environment variables in the Cloudflare dashboard:
+
+1. Go to Cloudflare dashboard
+2. Navigate to Workers & Pages → Your App
+3. Click Settings → Environment Variables
+4. Add the same variables:
+   - `HUBSPOT_ACCESS_TOKEN`
+   - Other environment variables as needed
+
+## Security Best Practices
+
+⚠️ **IMPORTANT**:
+- Never commit `.env` file to version control
+- Never hardcode tokens in code or documentation
+- Rotate tokens every 90 days
+- Use separate tokens for dev/staging/production if possible
+- Monitor token usage regularly
+
+## Verification
+
+To verify your token is working:
+
+```bash
+# Run the test script
+node test-hubspot.js
+```
+
+If you see "✅ HubSpot connection successful!" your token is configured correctly.

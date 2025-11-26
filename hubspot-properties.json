@@ -1,0 +1,425 @@
+🔍 Fetching HubSpot contact properties...
+
+Found 11 properties in "AI Readiness Assessment" group:
+
+
+📌 AE Hot Flag
+   Internal Name: ae_hot_flag
+   Type: enumeration
+   Field Type: checkbox
+   Options:
+      - Yes (value: true)
+      - No (value: false)
+
+📌 AI Readiness Score
+   Internal Name: ai_readiness_score
+   Type: number
+   Field Type: number
+
+📌 What's your current process for handling complex customer requests?
+   Internal Name: assessment_automation_level
+   Type: enumeration
+   Field Type: radio
+   Options:
+      - Fully manual (email, phone, documents) (value: fully_manual)
+      - Some tools, but lots of manual steps (value: mostly_manual)
+      - Semi-automated with workflows (value: semi_automated)
+      - Mostly automated but not AI-powered (value: mostly_automated)
+      - Already using AI/automation extensively (value: fully_automated)
+
+📌 Assessment Completed Date
+   Internal Name: assessment_completed_date
+   Type: date
+   Field Type: date
+
+📌 Who would be involved in evaluating an AI automation solution at your company?
+   Internal Name: assessment_decision_makers
+   Type: enumeration
+   Field Type: checkbox
+   Options:
+      - I'm the primary decision maker (value: primary)
+      - CEO/President (value: ceo_pres)
+      - CFO/Finance (value: cfa_fin)
+      - COO/VP Operations (value: coo_vp_ops)
+      - CTO/VP Technology (value: ctp_vp_tech)
+      - Department heads (value: dep_heads)
+      - Not sure yet (value: not_sure)
+
+📌 How much time does your team spend on repetitive, manual tasks each week?
+   Internal Name: assessment_manual_task_hours
+   Type: enumeration
+   Field Type: radio
+   Options:
+      - Less than 5 hours per person (value: 5_less_hours)
+      - 5-10 hours per person (value: 5_10_hours)
+      - 10-20 hours per person (value: 10_20_hours)
+      - More than 20 hours per person (value: 20_plus_hours)
+      - Not sure (value: not_sure)
+
+📌 What best describes your company's operations?
+   Internal Name: assessment_q1_response
+   Type: enumeration
+   Field Type: checkbox
+   Options:
+      - We handle complex technical sales or custom quotes (value: complex_sales)
+      - We manage high-volume customer inquiries or support (value: high_volume_support)
+      - We process RFPs, proposals, or contracts regularly (value: rfps_proposals_contracts)
+      - We coordinate multi-step projects or service delivery (value: multi_step_projects_or_services)
+      - We manage technical documentation or knowledge bases (value: tech_docs_or_kbs)
+      - Other (value: other)
+
+📌 Which of these operational challenges do you face?
+   Internal Name: assessment_q3_response
+   Type: enumeration
+   Field Type: checkbox
+   Options:
+      - Slow response times to customer inquiries (value: slow_response)
+      - Inconsistent answers across team members (value: inconsistent_answers)
+      - Difficulty accessing the right information quickly (value: slow_info)
+      - Manual data entry and system updates (value: manual_data_entry)
+      - Complex pricing or configuration processes (value: complex_pricing)
+      - Handoff delays between teams (value: handoff_delays)
+      - Training new team members takes too long (value: slow_onboarding)
+      - Difficulty scaling operations without adding headcount (value: difficulty_scaling)
+
+📌 What's your timeline for implementing operational improvements?
+   Internal Name: assessment_q7_response
+   Type: enumeration
+   Field Type: radio
+   Options:
+      - Actively evaluating solutions now (next 30 days) (value: evaluating)
+      - Planning for Q1 2026 (next 90 days) (value: 90_days)
+      - Planning for 2026 (next 6 months) (value: 6_months)
+      - Just researching for now (6+ months) (value: more_than_6_months)
+      - No specific timeline (value: no_timeline)
+
+📌 What would successful AI automation look like for your company?
+   Internal Name: assessment_q9_response
+   Type: enumeration
+   Field Type: checkbox
+   Options:
+      - Faster response times to customers (value: faster_response)
+      - More consistent service quality (value: consistent_service)
+      - Ability to scale without adding headcount (value: ability_to_scale)
+      - Reduced operational costs (value: reduced_cost)
+      - Better use of existing team's time (value: better_use_of_time)
+      - Improved accuracy and fewer errors (value: improved_accuracy)
+      - 24/7 availability (value: 24_7_availability)
+      - Competitive advantage (value: comp_advantage)
+
+📌 What systems does your company currently use?
+   Internal Name: assessment_systems_used
+   Type: enumeration
+   Field Type: checkbox
+   Options:
+      - CRM (Salesforce, HubSpot, etc.) (value: crm)
+      - ERP (SAP, Oracle, NetSuite, etc.) (value: erp)
+      - Project Management (Asana, Monday, Jira, etc.) (value: project_management)
+      - Support/Ticketing (Zendesk, Intercom, etc.) (value: support_ticketing)
+      - Custom databases or systems (value: custom_databases)
+      - Mostly spreadsheets and documents (value: spreadsheets_docs)
+      - Other (value: other)
+
+
+📄 JSON Output:
+
+[
+  {
+    "label": "AE Hot Flag",
+    "name": "ae_hot_flag",
+    "type": "enumeration",
+    "fieldType": "checkbox",
+    "options": [
+      {
+        "label": "Yes",
+        "value": "true"
+      },
+      {
+        "label": "No",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "label": "AI Readiness Score",
+    "name": "ai_readiness_score",
+    "type": "number",
+    "fieldType": "number",
+    "options": []
+  },
+  {
+    "label": "What's your current process for handling complex customer requests?",
+    "name": "assessment_automation_level",
+    "type": "enumeration",
+    "fieldType": "radio",
+    "options": [
+      {
+        "label": "Fully manual (email, phone, documents)",
+        "value": "fully_manual"
+      },
+      {
+        "label": "Some tools, but lots of manual steps",
+        "value": "mostly_manual"
+      },
+      {
+        "label": "Semi-automated with workflows",
+        "value": "semi_automated"
+      },
+      {
+        "label": "Mostly automated but not AI-powered",
+        "value": "mostly_automated"
+      },
+      {
+        "label": "Already using AI/automation extensively",
+        "value": "fully_automated"
+      }
+    ]
+  },
+  {
+    "label": "Assessment Completed Date",
+    "name": "assessment_completed_date",
+    "type": "date",
+    "fieldType": "date",
+    "options": []
+  },
+  {
+    "label": "Who would be involved in evaluating an AI automation solution at your company?",
+    "name": "assessment_decision_makers",
+    "type": "enumeration",
+    "fieldType": "checkbox",
+    "options": [
+      {
+        "label": "I'm the primary decision maker",
+        "value": "primary"
+      },
+      {
+        "label": "CEO/President",
+        "value": "ceo_pres"
+      },
+      {
+        "label": "CFO/Finance",
+        "value": "cfa_fin"
+      },
+      {
+        "label": "COO/VP Operations",
+        "value": "coo_vp_ops"
+      },
+      {
+        "label": "CTO/VP Technology",
+        "value": "ctp_vp_tech"
+      },
+      {
+        "label": "Department heads",
+        "value": "dep_heads"
+      },
+      {
+        "label": "Not sure yet",
+        "value": "not_sure"
+      }
+    ]
+  },
+  {
+    "label": "How much time does your team spend on repetitive, manual tasks each week?",
+    "name": "assessment_manual_task_hours",
+    "type": "enumeration",
+    "fieldType": "radio",
+    "options": [
+      {
+        "label": "Less than 5 hours per person",
+        "value": "5_less_hours"
+      },
+      {
+        "label": "5-10 hours per person",
+        "value": "5_10_hours"
+      },
+      {
+        "label": "10-20 hours per person",
+        "value": "10_20_hours"
+      },
+      {
+        "label": "More than 20 hours per person",
+        "value": "20_plus_hours"
+      },
+      {
+        "label": "Not sure",
+        "value": "not_sure"
+      }
+    ]
+  },
+  {
+    "label": "What best describes your company's operations?",
+    "name": "assessment_q1_response",
+    "type": "enumeration",
+    "fieldType": "checkbox",
+    "options": [
+      {
+        "label": "We handle complex technical sales or custom quotes",
+        "value": "complex_sales"
+      },
+      {
+        "label": "We manage high-volume customer inquiries or support",
+        "value": "high_volume_support"
+      },
+      {
+        "label": "We process RFPs, proposals, or contracts regularly",
+        "value": "rfps_proposals_contracts"
+      },
+      {
+        "label": "We coordinate multi-step projects or service delivery",
+        "value": "multi_step_projects_or_services"
+      },
+      {
+        "label": "We manage technical documentation or knowledge bases",
+        "value": "tech_docs_or_kbs"
+      },
+      {
+        "label": "Other",
+        "value": "other"
+      }
+    ]
+  },
+  {
+    "label": "Which of these operational challenges do you face?",
+    "name": "assessment_q3_response",
+    "type": "enumeration",
+    "fieldType": "checkbox",
+    "options": [
+      {
+        "label": "Slow response times to customer inquiries",
+        "value": "slow_response"
+      },
+      {
+        "label": "Inconsistent answers across team members",
+        "value": "inconsistent_answers"
+      },
+      {
+        "label": "Difficulty accessing the right information quickly",
+        "value": "slow_info"
+      },
+      {
+        "label": "Manual data entry and system updates",
+        "value": "manual_data_entry"
+      },
+      {
+        "label": "Complex pricing or configuration processes",
+        "value": "complex_pricing"
+      },
+      {
+        "label": "Handoff delays between teams",
+        "value": "handoff_delays"
+      },
+      {
+        "label": "Training new team members takes too long",
+        "value": "slow_onboarding"
+      },
+      {
+        "label": "Difficulty scaling operations without adding headcount",
+        "value": "difficulty_scaling"
+      }
+    ]
+  },
+  {
+    "label": "What's your timeline for implementing operational improvements?",
+    "name": "assessment_q7_response",
+    "type": "enumeration",
+    "fieldType": "radio",
+    "options": [
+      {
+        "label": "Actively evaluating solutions now (next 30 days)",
+        "value": "evaluating"
+      },
+      {
+        "label": "Planning for Q1 2026 (next 90 days)",
+        "value": "90_days"
+      },
+      {
+        "label": "Planning for 2026 (next 6 months)",
+        "value": "6_months"
+      },
+      {
+        "label": "Just researching for now (6+ months)",
+        "value": "more_than_6_months"
+      },
+      {
+        "label": "No specific timeline",
+        "value": "no_timeline"
+      }
+    ]
+  },
+  {
+    "label": "What would successful AI automation look like for your company?",
+    "name": "assessment_q9_response",
+    "type": "enumeration",
+    "fieldType": "checkbox",
+    "options": [
+      {
+        "label": "Faster response times to customers",
+        "value": "faster_response"
+      },
+      {
+        "label": "More consistent service quality",
+        "value": "consistent_service"
+      },
+      {
+        "label": "Ability to scale without adding headcount",
+        "value": "ability_to_scale"
+      },
+      {
+        "label": "Reduced operational costs",
+        "value": "reduced_cost"
+      },
+      {
+        "label": "Better use of existing team's time",
+        "value": "better_use_of_time"
+      },
+      {
+        "label": "Improved accuracy and fewer errors",
+        "value": "improved_accuracy"
+      },
+      {
+        "label": "24/7 availability",
+        "value": "24_7_availability"
+      },
+      {
+        "label": "Competitive advantage",
+        "value": "comp_advantage"
+      }
+    ]
+  },
+  {
+    "label": "What systems does your company currently use?",
+    "name": "assessment_systems_used",
+    "type": "enumeration",
+    "fieldType": "checkbox",
+    "options": [
+      {
+        "label": "CRM (Salesforce, HubSpot, etc.)",
+        "value": "crm"
+      },
+      {
+        "label": "ERP (SAP, Oracle, NetSuite, etc.)",
+        "value": "erp"
+      },
+      {
+        "label": "Project Management (Asana, Monday, Jira, etc.)",
+        "value": "project_management"
+      },
+      {
+        "label": "Support/Ticketing (Zendesk, Intercom, etc.)",
+        "value": "support_ticketing"
+      },
+      {
+        "label": "Custom databases or systems",
+        "value": "custom_databases"
+      },
+      {
+        "label": "Mostly spreadsheets and documents",
+        "value": "spreadsheets_docs"
+      },
+      {
+        "label": "Other",
+        "value": "other"
+      }
+    ]
+  }
+]
