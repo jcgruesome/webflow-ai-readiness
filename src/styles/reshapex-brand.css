@@ -312,6 +312,17 @@ select:focus-visible {
   transition-duration: 150ms;
 }
 
+/* Override global .grid to not interfere with Tailwind grids */
+.grid[data-grid-override="true"] {
+  grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+}
+
+@media (min-width: 768px) {
+  .grid[data-grid-override="true"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
 /* Screen reader only */
 .sr-only {
   position: absolute;
