@@ -20,10 +20,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const hubspotClient = new Client({ accessToken: token });
 
     // Extract contact info
-    const email = answers.email;
-    const firstName = answers.firstname;
-    const lastName = answers.lastname;
-    const companyName = answers.company;
+    const email = answers.contact_email || answers.email;
+    const companyName = answers.company_name || answers.company;
+    const roleTitle = answers.role_title;
 
     if (!email) {
       return new Response(JSON.stringify({ error: 'Email is required' }), {
@@ -33,28 +32,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     console.log('📝 Processing assessment submission for:', email);
-
-    // Prepare contact properties - mapping to actual HubSpot property names
-    const contactProperties: Record<string, any> = {
-      email,
-      firstname: firstName,
-      lastname: lastName,
-      company: companyName,
-      
-      // Assessment responses - mapped to exact HubSpot property names
-      assessment_q1_response: answers.assessment_q1_response || null,
-      assessment_automation_level: answers.assessment_automation_level || null,
-      assessment_q3_response: answers.assessment_q3_response || null,
-      assessment_manual_task_hours: answers.assessment_manual_task_hours || null,
-      assessment_systems_used: answers.assessment_systems_used || null,
-      assessment_decision_makers: answers.assessment_decision_makers || null,
-      assessment_q7_response: answers.assessment_q7_response || null,
-      assessment_q9_response: answers.assessment_q9_response || null,
-      
-      // Score and metadata
-      ai_readiness_score: score,
-      assessment_completed_date: new Date().toISOString().split('T')[0],
-    };
 
     // Determine score band
     let scoreBand = 'Low';
@@ -69,12 +46,47 @@ export const POST: APIRoute = async ({ request, locals }) => {
       scoreBand = 'Medium';
     }
 
-    // Set AE Hot Flag if score is 80+
-    if (hotFlag) {
+    // Check for secondary signals for Hot lead routing
+    const companySize = answers.company_size;
+    const budget = answers.estimated_AI_budget_2026;
+    const timeline = answers.decision_timeline;
+    
+    const hasSecondarySignal = 
+      (companySize && (companySize === '50-199' || companySize === '200-499' || companySize === '500+')) ||
+      (budget && (budget === '50k_150k' || budget === 'over_150k')) ||
+      (timeline && (timeline === 'now' || timeline === '0_3_months'));
+
+    // Prepare contact properties - mapping to new HubSpot property names
+    const contactProperties: Record<string, any> = {
+      email,
+      company_name: companyName,
+      role_title: roleTitle || null,
+      
+      // Assessment responses - mapped to exact HubSpot property names
+      company_size: companySize || null,
+      annual_revenue: answers.annual_revenue || null,
+      primary_pain: Array.isArray(answers.primary_pain) ? answers.primary_pain.join(', ') : (answers.primary_pain || null),
+      existing_automation: answers.existing_automation || null,
+      tech_stack: Array.isArray(answers.tech_stack) ? answers.tech_stack.join(', ') : (answers.tech_stack || null),
+      estimated_AI_budget_2026: budget || null,
+      decision_timeline: timeline || null,
+      open_ended_pain: answers.open_ended_pain || null,
+      
+      // Conditional question (existing_automation follow-up)
+      existing_automation_details: answers[`existing_automation_conditional`] || null,
+      
+      // Score and metadata
+      readiness_score: score,
+      assessment_form_completed_at: new Date().toISOString(),
+      assess_band: scoreBand,
+    };
+
+    // Set AE Hot Flag if score is 80+ AND has secondary signal
+    if (hotFlag && hasSecondarySignal) {
       contactProperties.ae_hot_flag = 'true';
     }
 
-    console.log('📊 Score:', score, '| Band:', scoreBand, '| Hot Flag:', hotFlag);
+    console.log('📊 Score:', score, '| Band:', scoreBand, '| Hot Flag:', hotFlag, '| Secondary Signal:', hasSecondarySignal);
 
     // Create or update contact
     let contactId: string;
@@ -115,7 +127,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         console.log('✅ Contact created successfully:', contactId);
       }
 
-      // If company name provided, create/update company
+      // If company name provided, create/update company with company properties
       if (companyName) {
         try {
           console.log('🏢 Processing company:', companyName);
@@ -129,21 +141,36 @@ export const POST: APIRoute = async ({ request, locals }) => {
                 value: companyName
               }]
             }],
-            properties: ['name'],
+            properties: ['name', 'company_size', 'annual_revenue'],
             limit: 1
           });
 
           let companyId: string;
+          const companyProperties: Record<string, any> = {
+            name: companyName,
+          };
+
+          // Update company properties if provided
+          if (companySize) {
+            companyProperties.company_size = companySize;
+          }
+          if (answers.annual_revenue) {
+            companyProperties.annual_revenue = answers.annual_revenue;
+          }
 
           if (companySearchResponse.results && companySearchResponse.results.length > 0) {
             companyId = companySearchResponse.results[0].id;
             console.log('🔄 Found existing company:', companyId);
+            
+            // Update company properties
+            await hubspotClient.crm.companies.basicApi.update(companyId, {
+              properties: companyProperties
+            });
+            console.log('✅ Company updated');
           } else {
             // Create new company
             const createCompanyResponse = await hubspotClient.crm.companies.basicApi.create({
-              properties: {
-                name: companyName,
-              }
+              properties: companyProperties
             });
             companyId = createCompanyResponse.id;
             console.log('✅ Company created:', companyId);
