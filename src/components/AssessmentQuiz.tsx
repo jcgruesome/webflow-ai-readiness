@@ -480,11 +480,11 @@ export default function AssessmentQuiz() {
 
       {/* Question Card */}
       <Card className="border-2 rx-border-slate mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300" role="region" aria-labelledby={`question-${currentStep}`}>
-        <CardHeader className="pb-4 sm:pb-6 text-center">
+        <CardHeader className="pb-6 text-center">
           <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-6">
             {currentQuestion.question}
           </CardTitle>
-          <div className="flex flex-col items-center gap-2 mb-4">
+          <div className="flex flex-col items-center gap-2">
             {currentQuestion.required && (
               <span className="text-xs sm:text-sm rx-text-green font-semibold" aria-label="Required question">Required</span>
             )}
@@ -508,44 +508,43 @@ export default function AssessmentQuiz() {
             )}
           </div>
         </CardHeader>
-        <CardContent className="space-y-3 sm:space-y-4">
+        <CardContent className="space-y-3">
           {/* Single Choice */}
           {currentQuestion.type === 'single' && (
             <RadioGroup
               value={answers[currentQuestion.id] || ''}
               onValueChange={handleAnswer}
+              className="space-y-3"
             >
-              <div className="space-y-3">
-                {currentQuestion.options?.map((option) => {
-                  const isSelected = answers[currentQuestion.id] === option.value;
-                  return (
-                    <div 
-                      key={option.value}
-                      className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer w-full ${
-                        isSelected 
-                          ? 'border-[#73B400] bg-[rgba(115,180,0,0.05)] shadow-sm' 
-                          : 'rx-border-slate hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
+              {currentQuestion.options?.map((option) => {
+                const isSelected = answers[currentQuestion.id] === option.value;
+                return (
+                  <div 
+                    key={option.value}
+                    className={`flex items-center gap-4 p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer ${
+                      isSelected 
+                        ? 'border-[#73B400] bg-[rgba(115,180,0,0.05)] shadow-sm' 
+                        : 'border-[rgba(139,154,173,0.15)] hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
+                    }`}
+                    onClick={() => handleAnswer(option.value)}
+                  >
+                    <RadioGroupItem 
+                      value={option.value} 
+                      id={option.value} 
+                      className="flex-shrink-0 pointer-events-none" 
+                    />
+                    <Label 
+                      htmlFor={option.value} 
+                      className={`flex-1 cursor-pointer text-base font-medium leading-normal pointer-events-none ${
+                        isSelected ? 'text-white' : 'rx-text-steel'
                       }`}
-                      onClick={() => handleAnswer(option.value)}
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      <RadioGroupItem 
-                        value={option.value} 
-                        id={option.value} 
-                        className="flex-shrink-0 pointer-events-none" 
-                      />
-                      <Label 
-                        htmlFor={option.value} 
-                        className={`flex-1 cursor-pointer text-sm sm:text-base font-medium leading-normal pointer-events-none ${
-                          isSelected ? 'text-white' : 'rx-text-steel'
-                        }`}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {option.label}
-                      </Label>
-                    </div>
-                  );
-                })}
-              </div>
+                      {option.label}
+                    </Label>
+                  </div>
+                );
+              })}
             </RadioGroup>
           )}
 
@@ -557,10 +556,10 @@ export default function AssessmentQuiz() {
                 return (
                   <div 
                     key={option.value}
-                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer w-full ${
+                    className={`flex items-center gap-4 p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer ${
                       isChecked 
                         ? 'border-[#73B400] bg-[rgba(115,180,0,0.05)] shadow-sm' 
-                        : 'rx-border-slate hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
+                        : 'border-[rgba(139,154,173,0.15)] hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
                     }`}
                     onClick={() => handleMultipleChoice(option.value, !isChecked)}
                   >
@@ -572,7 +571,7 @@ export default function AssessmentQuiz() {
                     />
                     <Label 
                       htmlFor={option.value}
-                      className={`flex-1 cursor-pointer text-sm sm:text-base font-medium leading-normal pointer-events-none ${
+                      className={`flex-1 cursor-pointer text-base font-medium leading-normal pointer-events-none ${
                         isChecked ? 'text-white' : 'rx-text-steel'
                       }`}
                       onClick={(e) => e.stopPropagation()}
