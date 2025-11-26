@@ -5,162 +5,167 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Label } from './ui/label';
 import { Checkbox } from './ui/checkbox';
 import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
 import { Award, ArrowRight, ArrowLeft, RotateCcw, Loader2, ExternalLink } from 'lucide-react';
 import { baseUrl } from '../lib/base-url';
-import { assessmentConfig, getResultEmailLine } from '../lib/assessment-config';
+import { assessmentConfig } from '../lib/assessment-config';
 
 interface Question {
   id: string;
   question: string;
-  type: 'text' | 'email' | 'single' | 'multiple' | 'textarea' | 'checkbox';
+  type: 'text' | 'email' | 'single' | 'multiple';
   options?: { value: string; label: string; points?: number }[];
   required: boolean;
   placeholder?: string;
-  conditionalQuestion?: { dependsOn: string; dependsValue: any; question: string; type: 'text' | 'textarea'; placeholder?: string };
 }
 
-// Questions mapped to updated scope requirements
+// Questions mapped to HubSpot properties with exact property names and values
+// ASSESSMENT QUESTIONS FIRST, then contact info at the end
 const questions: Question[] = [
+  // Assessment Questions (mapped to HubSpot properties)
   {
-    id: 'company_name',
-    question: 'Company Name',
-    type: 'text',
+    id: 'assessment_q1_response',
+    question: 'What best describes your company\'s operations?',
+    type: 'multiple',
     required: true,
-    placeholder: 'Acme Inc.'
+    options: [
+      { value: 'complex_sales', label: 'We handle complex technical sales or custom quotes', points: 15 },
+      { value: 'high_volume_support', label: 'We manage high-volume customer inquiries or support', points: 15 },
+      { value: 'rfps_proposals_contracts', label: 'We process RFPs, proposals, or contracts regularly', points: 15 },
+      { value: 'multi_step_projects_or_services', label: 'We coordinate multi-step projects or service delivery', points: 10 },
+      { value: 'tech_docs_or_kbs', label: 'We manage technical documentation or knowledge bases', points: 10 },
+      { value: 'other', label: 'Other', points: 5 },
+    ],
   },
   {
-    id: 'contact_email',
+    id: 'assessment_automation_level',
+    question: 'What\'s your current process for handling complex customer requests?',
+    type: 'single',
+    required: true,
+    options: [
+      { value: 'fully_manual', label: 'Fully manual (email, phone, documents)', points: 0 },
+      { value: 'mostly_manual', label: 'Some tools, but lots of manual steps', points: 5 },
+      { value: 'semi_automated', label: 'Semi-automated with workflows', points: 10 },
+      { value: 'mostly_automated', label: 'Mostly automated but not AI-powered', points: 15 },
+      { value: 'fully_automated', label: 'Already using AI/automation extensively', points: 20 },
+    ],
+  },
+  {
+    id: 'assessment_q3_response',
+    question: 'Which of these operational challenges do you face?',
+    type: 'multiple',
+    required: true,
+    options: [
+      { value: 'slow_response', label: 'Slow response times to customer inquiries', points: 10 },
+      { value: 'inconsistent_answers', label: 'Inconsistent answers across team members', points: 10 },
+      { value: 'slow_info', label: 'Difficulty accessing the right information quickly', points: 10 },
+      { value: 'manual_data_entry', label: 'Manual data entry and system updates', points: 10 },
+      { value: 'complex_pricing', label: 'Complex pricing or configuration processes', points: 15 },
+      { value: 'handoff_delays', label: 'Handoff delays between teams', points: 10 },
+      { value: 'slow_onboarding', label: 'Training new team members takes too long', points: 5 },
+      { value: 'difficulty_scaling', label: 'Difficulty scaling operations without adding headcount', points: 15 },
+    ],
+  },
+  {
+    id: 'assessment_manual_task_hours',
+    question: 'How much time does your team spend on repetitive, manual tasks each week?',
+    type: 'single',
+    required: true,
+    options: [
+      { value: '5_less_hours', label: 'Less than 5 hours per person', points: 0 },
+      { value: '5_10_hours', label: '5-10 hours per person', points: 5 },
+      { value: '10_20_hours', label: '10-20 hours per person', points: 10 },
+      { value: '20_plus_hours', label: 'More than 20 hours per person', points: 20 },
+      { value: 'not_sure', label: 'Not sure', points: 0 },
+    ],
+  },
+  {
+    id: 'assessment_systems_used',
+    question: 'What systems does your company currently use?',
+    type: 'multiple',
+    required: true,
+    options: [
+      { value: 'crm', label: 'CRM (Salesforce, HubSpot, etc.)', points: 10 },
+      { value: 'erp', label: 'ERP (SAP, Oracle, NetSuite, etc.)', points: 10 },
+      { value: 'project_management', label: 'Project Management (Asana, Monday, Jira, etc.)', points: 5 },
+      { value: 'support_ticketing', label: 'Support/Ticketing (Zendesk, Intercom, etc.)', points: 5 },
+      { value: 'custom_databases', label: 'Custom databases or systems', points: 5 },
+      { value: 'spreadsheets_docs', label: 'Mostly spreadsheets and documents', points: 0 },
+      { value: 'other', label: 'Other', points: 0 },
+    ],
+  },
+  {
+    id: 'assessment_decision_makers',
+    question: 'Who would be involved in evaluating an AI automation solution at your company?',
+    type: 'multiple',
+    required: true,
+    options: [
+      { value: 'primary', label: 'I\'m the primary decision maker', points: 20 },
+      { value: 'ceo_pres', label: 'CEO/President', points: 15 },
+      { value: 'cfa_fin', label: 'CFO/Finance', points: 10 },
+      { value: 'coo_vp_ops', label: 'COO/VP Operations', points: 15 },
+      { value: 'ctp_vp_tech', label: 'CTO/VP Technology', points: 10 },
+      { value: 'dep_heads', label: 'Department heads', points: 5 },
+      { value: 'not_sure', label: 'Not sure yet', points: 0 },
+    ],
+  },
+  {
+    id: 'assessment_q7_response',
+    question: 'What\'s your timeline for implementing operational improvements?',
+    type: 'single',
+    required: true,
+    options: [
+      { value: 'evaluating', label: 'Actively evaluating solutions now (next 30 days)', points: 20 },
+      { value: '90_days', label: 'Planning for Q1 2026 (next 90 days)', points: 15 },
+      { value: '6_months', label: 'Planning for 2026 (next 6 months)', points: 10 },
+      { value: 'more_than_6_months', label: 'Just researching for now (6+ months)', points: 5 },
+      { value: 'no_timeline', label: 'No specific timeline', points: 0 },
+    ],
+  },
+  {
+    id: 'assessment_q9_response',
+    question: 'What would successful AI automation look like for your company?',
+    type: 'multiple',
+    required: true,
+    options: [
+      { value: 'faster_response', label: 'Faster response times to customers', points: 10 },
+      { value: 'consistent_service', label: 'More consistent service quality', points: 10 },
+      { value: 'ability_to_scale', label: 'Ability to scale without adding headcount', points: 15 },
+      { value: 'reduced_cost', label: 'Reduced operational costs', points: 15 },
+      { value: 'better_use_of_time', label: 'Better use of existing team\'s time', points: 10 },
+      { value: 'improved_accuracy', label: 'Improved accuracy and fewer errors', points: 10 },
+      { value: '24_7_availability', label: '24/7 availability', points: 5 },
+      { value: 'comp_advantage', label: 'Competitive advantage', points: 10 },
+    ],
+  },
+  
+  // Contact Information - COLLECTED AT THE END
+  {
+    id: 'email',
     question: 'Work Email',
     type: 'email',
     required: true,
     placeholder: 'john@company.com'
   },
   {
-    id: 'role_title',
-    question: 'Your Role/Title',
+    id: 'firstname',
+    question: 'First Name',
     type: 'text',
     required: true,
-    placeholder: 'VP of Operations'
+    placeholder: 'John'
   },
   {
-    id: 'company_size',
-    question: 'How many employees does your company have?',
-    type: 'single',
+    id: 'lastname',
+    question: 'Last Name',
+    type: 'text',
     required: true,
-    options: [
-      { value: '1-49', label: '1–49' },
-      { value: '50-199', label: '50–199' },
-      { value: '200-499', label: '200–499' },
-      { value: '500+', label: '500+' },
-    ],
+    placeholder: 'Smith'
   },
   {
-    id: 'annual_revenue',
-    question: 'What\'s your estimated annual revenue?',
-    type: 'single',
+    id: 'company',
+    question: 'Company Name',
+    type: 'text',
     required: true,
-    options: [
-      { value: 'under_10m', label: 'Under $10M' },
-      { value: '10m_50m', label: '$10M–$50M' },
-      { value: '50m_200m', label: '$50M–$200M' },
-      { value: '200m_500m', label: '$200M–$500M' },
-      { value: 'over_500m', label: 'Over $500M' },
-    ],
-  },
-  {
-    id: 'primary_pain',
-    question: 'Which of these operational challenges do you face? (Select all that apply)',
-    type: 'multiple',
-    required: true,
-    options: [
-      { value: 'quoting_delays', label: 'Quoting delays' },
-      { value: 'manual_order_processing', label: 'Manual order processing' },
-      { value: 'support_backlog', label: 'Support backlog' },
-      { value: 'claims_processing', label: 'Claims processing delays' },
-      { value: 'slow_response_times', label: 'Slow response times to customer inquiries' },
-      { value: 'inconsistent_answers', label: 'Inconsistent answers across team members' },
-      { value: 'difficulty_accessing_info', label: 'Difficulty accessing the right information quickly' },
-      { value: 'manual_data_entry', label: 'Manual data entry and system updates' },
-      { value: 'complex_pricing', label: 'Complex pricing or configuration processes' },
-      { value: 'handoff_delays', label: 'Handoff delays between teams' },
-      { value: 'slow_onboarding', label: 'Training new team members takes too long' },
-      { value: 'difficulty_scaling', label: 'Difficulty scaling operations without adding headcount' },
-      { value: 'other', label: 'Other (please specify)' },
-    ],
-  },
-  {
-    id: 'existing_automation',
-    question: 'Do you currently have any automation in place?',
-    type: 'single',
-    required: true,
-    options: [
-      { value: 'yes', label: 'Yes' },
-      { value: 'no', label: 'No' },
-    ],
-    conditionalQuestion: {
-      dependsOn: 'existing_automation',
-      dependsValue: 'yes',
-      question: 'Which systems or processes are automated?',
-      type: 'textarea',
-      placeholder: 'Please describe your current automation...'
-    }
-  },
-  {
-    id: 'tech_stack',
-    question: 'What systems does your company currently use? (Select all that apply)',
-    type: 'multiple',
-    required: true,
-    options: [
-      { value: 'erp', label: 'ERP (SAP, Oracle, NetSuite, etc.)' },
-      { value: 'crm', label: 'CRM (Salesforce, HubSpot, etc.)' },
-      { value: 'helpdesk', label: 'Helpdesk (Zendesk, Intercom, etc.)' },
-      { value: 'wms', label: 'WMS (Warehouse Management System)' },
-      { value: 'custom_db', label: 'Custom databases or systems' },
-      { value: 'other', label: 'Other (please specify)' },
-    ],
-  },
-  {
-    id: 'estimated_AI_budget_2026',
-    question: 'What\'s your estimated AI automation budget for 2026?',
-    type: 'single',
-    required: true,
-    options: [
-      { value: 'none', label: 'None' },
-      { value: 'under_25k', label: 'Under $25k' },
-      { value: '25k_50k', label: '$25k–$50k' },
-      { value: '50k_150k', label: '$50k–$150k' },
-      { value: 'over_150k', label: 'Over $150k' },
-    ],
-  },
-  {
-    id: 'decision_timeline',
-    question: 'What\'s your timeline for implementing operational improvements?',
-    type: 'single',
-    required: true,
-    options: [
-      { value: 'now', label: 'Now' },
-      { value: '0_3_months', label: '0–3 months' },
-      { value: '3_6_months', label: '3–6 months' },
-      { value: '6_12_months', label: '6–12 months' },
-      { value: 'no_budget', label: 'No budget' },
-    ],
-  },
-  {
-    id: 'open_ended_pain',
-    question: 'In one sentence, what\'s your biggest automation challenge?',
-    type: 'textarea',
-    required: true,
-    placeholder: 'Describe your biggest automation challenge...'
-  },
-  {
-    id: 'consent_checkbox',
-    question: 'I consent to being contacted and having my data stored',
-    type: 'checkbox',
-    required: true,
-    options: [
-      { value: 'consent', label: 'Yes, I consent to being contacted and having my data stored' },
-    ],
+    placeholder: 'Acme Inc.'
   },
 ];
 
@@ -176,6 +181,10 @@ export default function AssessmentQuiz() {
   const totalSteps = questions.length;
   const progress = (currentStep / totalSteps) * 100;
 
+  // Check if we're in the contact information section (last 4 questions)
+  const isContactStep = currentStep >= 8; // Questions 9-12 (index 8-11)
+  const isFirstContactStep = currentStep === 8;
+
   // Check if current question is answered
   const isCurrentAnswered = () => {
     const answer = answers[currentQuestion.id];
@@ -184,17 +193,7 @@ export default function AssessmentQuiz() {
     if (currentQuestion.type === 'multiple') {
       return Array.isArray(answer) && answer.length > 0;
     }
-    if (currentQuestion.type === 'checkbox') {
-      return answer === true || answer === 'consent';
-    }
     return answer !== undefined && answer !== '' && answer !== null;
-  };
-
-  // Check if conditional question should be shown
-  const shouldShowConditional = () => {
-    if (!currentQuestion.conditionalQuestion) return false;
-    const dependsOnAnswer = answers[currentQuestion.conditionalQuestion.dependsOn];
-    return dependsOnAnswer === currentQuestion.conditionalQuestion.dependsValue;
   };
 
   const handleNext = () => {
@@ -231,71 +230,48 @@ export default function AssessmentQuiz() {
   const calculateAndSubmit = async () => {
     setIsSubmitting(true);
 
-    // Calculate score based on new scope rules
-    let totalScore = 0;
-    const maxPossibleScore = 100; // Normalized max
+    // Calculate score based on points from all questions
+    let totalPoints = 0;
+    let maxPossiblePoints = 0;
 
-    // Company size: >50 = +10
-    const companySize = answers.company_size;
-    if (companySize === '50-199' || companySize === '200-499' || companySize === '500+') {
-      totalScore += 10;
-    }
+    questions.forEach(q => {
+      if (q.options && q.options.length > 0) {
+        // Calculate max possible points for this question
+        if (q.type === 'multiple') {
+          // For multiple choice, max is sum of all option points
+          maxPossiblePoints += q.options.reduce((sum, opt) => sum + (opt.points || 0), 0);
+        } else {
+          // For single choice, max is highest point value
+          maxPossiblePoints += Math.max(...q.options.map(opt => opt.points || 0));
+        }
 
-    // Annual revenue: >$10M = +10
-    const revenue = answers.annual_revenue;
-    if (revenue === '10m_50m' || revenue === '50m_200m' || revenue === '200m_500m' || revenue === 'over_500m') {
-      totalScore += 10;
-    }
+        // Calculate actual points from user's answers
+        const answer = answers[q.id];
+        if (answer) {
+          if (q.type === 'multiple' && Array.isArray(answer)) {
+            // Sum points for all selected options
+            answer.forEach(val => {
+              const option = q.options?.find(opt => opt.value === val);
+              if (option && option.points) {
+                totalPoints += option.points;
+              }
+            });
+          } else {
+            // Single choice - add points for selected option
+            const option = q.options.find(opt => opt.value === answer);
+            if (option && option.points) {
+              totalPoints += option.points;
+            }
+          }
+        }
+      }
+    });
 
-    // Primary pain: match to high-value problems (quoting, claims, order processing) = +15
-    const primaryPain = answers.primary_pain || [];
-    const highValuePains = ['quoting_delays', 'manual_order_processing', 'support_backlog', 'claims_processing'];
-    const hasHighValuePain = primaryPain.some((pain: string) => highValuePains.includes(pain));
-    if (hasHighValuePain) {
-      totalScore += 15;
-    }
-
-    // Existing automation: none = +5 (higher need), some = +10 (higher readiness)
-    const existingAutomation = answers.existing_automation;
-    if (existingAutomation === 'no') {
-      totalScore += 5;
-    } else if (existingAutomation === 'yes') {
-      totalScore += 10;
-    }
-
-    // Tech stack presence (ERP/CRM) = +10
-    const techStack = answers.tech_stack || [];
-    const hasErpOrCrm = techStack.includes('erp') || techStack.includes('crm');
-    if (hasErpOrCrm) {
-      totalScore += 10;
-    }
-
-    // Estimated budget: 50k–150k = +10, >150k = +20
-    const budget = answers.estimated_AI_budget_2026;
-    if (budget === '50k_150k') {
-      totalScore += 10;
-    } else if (budget === 'over_150k') {
-      totalScore += 20;
-    }
-
-    // Decision timeline: now/0–3mo = +15, 3–6mo = +10
-    const timeline = answers.decision_timeline;
-    if (timeline === 'now' || timeline === '0_3_months') {
-      totalScore += 15;
-    } else if (timeline === '3_6_months') {
-      totalScore += 10;
-    }
-
-    // Open-ended pain (qualitative): presence of specific measurable pain = +10
-    const openEndedPain = (answers.open_ended_pain || '').toLowerCase();
-    const measurableTerms = assessmentConfig.measurableTerms;
-    const hasMeasurablePain = measurableTerms.some(term => openEndedPain.includes(term));
-    if (hasMeasurablePain) {
-      totalScore += 10;
-    }
-
-    // Normalize to 0-100 (already using 0-100 scale, but cap at 100)
-    const normalizedScore = Math.min(100, totalScore);
+    // Normalize to 0-100 scale
+    const normalizedScore = maxPossiblePoints > 0 
+      ? Math.round((totalPoints / maxPossiblePoints) * 100)
+      : 0;
+    
     setScore(normalizedScore);
 
     // Determine score band
@@ -336,14 +312,9 @@ export default function AssessmentQuiz() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Contact questions are now at the beginning, so no special context card needed
-  const isContactStep = false;
-  const isLastContactStep = false;
-
   // Results Screen
   if (showResults) {
     const bandConfig = assessmentConfig.scoreBands[scoreBand];
-    const userEmail = answers.contact_email || answers.email || '';
 
     return (
       <div className="w-full space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -371,10 +342,10 @@ export default function AssessmentQuiz() {
           <CardContent className="space-y-4 sm:space-y-6 relative z-10">
             <div className="text-center">
               <p className="text-sm sm:text-base md:text-lg rx-text-steel leading-relaxed px-2">
-                {scoreBand === 'hot' && `Your AI Readiness Score: ${score} — High. You show strong potential in data access and repetitive operational tasks. This assessment is a diagnostic — to turn these opportunities into prioritized quick wins and a costed implementation plan we recommend a short full assessment. Book a 30‑minute discovery with our team to reserve a slot and get a tailored implementation plan.`}
-                {scoreBand === 'high' && `Your AI Readiness Score: ${score} — High. We see meaningful opportunities. Book a discovery to get a prioritized plan.`}
-                {scoreBand === 'medium' && `Your AI Readiness Score: ${score} — Medium. We recommend starting with the Budget Planning Checklist and a webinar.`}
-                {scoreBand === 'low' && `Your AI Readiness Score: ${score} — Low. We recommend exploring some foundational automation resources and re-checking in 90 days.`}
+                {scoreBand === 'hot' && `Your AI Readiness Score: ${score} — Hot Lead. You show strong potential for AI automation. Book a 30-45 minute full assessment with our team to get prioritized quick wins and a tactical implementation plan.`}
+                {scoreBand === 'high' && `Your AI Readiness Score: ${score} — High Readiness. We see meaningful opportunities. Book a discovery call to explore how AI automation can transform your operations.`}
+                {scoreBand === 'medium' && `Your AI Readiness Score: ${score} — Medium Readiness. You're building a foundation. Download our Budget Planning Checklist and join our upcoming webinar to learn more.`}
+                {scoreBand === 'low' && `Your AI Readiness Score: ${score} — Early Stage. We recommend exploring foundational automation resources. We'll check in again in 90 days to see how your needs have evolved.`}
               </p>
             </div>
 
@@ -428,7 +399,6 @@ export default function AssessmentQuiz() {
                 </div>
               )}
 
-
               <Button
                 variant="ghost"
                 className="w-full mt-4 sm:mt-6 rx-text-steel hover:text-white hover:bg-[rgba(115,180,0,0.1)]"
@@ -458,11 +428,11 @@ export default function AssessmentQuiz() {
                   </p>
                   <p className="flex items-start gap-3 text-sm sm:text-base leading-relaxed">
                     <span className="rx-text-blue font-bold flex-shrink-0">2.</span>
-                    <span>You'll receive personalized recommendations showing where smarter AI agents can deliver better outcomes and faster revenue</span>
+                    <span>You'll receive personalized recommendations showing where AI agents can improve outcomes and accelerate revenue</span>
                   </p>
                   <p className="flex items-start gap-3 text-sm sm:text-base leading-relaxed">
                     <span className="rx-text-green font-bold flex-shrink-0">3.</span>
-                    <span>We'll reach out to schedule a full assessment where we'll identify how to build, tune, and maintain AI agents for your operations</span>
+                    <span>We'll schedule a full assessment to identify how to build, tune, and maintain AI agents for your operations</span>
                   </p>
                 </>
               )}
@@ -478,7 +448,7 @@ export default function AssessmentQuiz() {
                   </p>
                   <p className="flex items-start gap-3 text-sm sm:text-base leading-relaxed">
                     <span className="rx-text-green font-bold flex-shrink-0">3.</span>
-                    <span>We'll reach out to schedule a discovery call to discuss your opportunities</span>
+                    <span>We'll discuss your specific opportunities and next steps</span>
                   </p>
                 </>
               )}
@@ -490,7 +460,7 @@ export default function AssessmentQuiz() {
                   </p>
                   <p className="flex items-start gap-3 text-sm sm:text-base leading-relaxed">
                     <span className="rx-text-blue font-bold flex-shrink-0">2.</span>
-                    <span>Join our upcoming webinar on AI budget planning</span>
+                    <span>Join our upcoming webinar on AI automation planning</span>
                   </p>
                   <p className="flex items-start gap-3 text-sm sm:text-base leading-relaxed">
                     <span className="rx-text-green font-bold flex-shrink-0">3.</span>
@@ -510,7 +480,7 @@ export default function AssessmentQuiz() {
                   </p>
                   <p className="flex items-start gap-3 text-sm sm:text-base leading-relaxed">
                     <span className="rx-text-green font-bold flex-shrink-0">3.</span>
-                    <span>We'll check in again in 90 days to see if your situation has changed</span>
+                    <span>We'll check in again in 90 days to see if your needs have evolved</span>
                   </p>
                 </>
               )}
@@ -547,6 +517,25 @@ export default function AssessmentQuiz() {
           />
         </div>
       </div>
+
+      {/* Context Card - Show before first contact question */}
+      {isFirstContactStep && (
+        <Card className="w-full rx-bg-slate border-2 border-[rgba(115,180,0,0.3)] mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full rx-bg-deep-space border border-[rgba(115,180,0,0.3)] flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 rx-text-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-base sm:text-lg font-bold text-white mb-3">Almost done!</h3>
+                <p className="text-sm sm:text-base rx-text-steel leading-relaxed">We'll send your personalized AI readiness report to your email. Just a few more details and you're all set.</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Question Card */}
       <Card className="w-full border-2 rx-border-slate mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300" role="region" aria-labelledby={`question-${currentStep}`}>
@@ -686,106 +675,8 @@ export default function AssessmentQuiz() {
               className="text-sm sm:text-base p-3 sm:p-4 rx-bg-deep-space text-white border-2 rx-border-slate focus:border-[#73B400] focus:ring-2 focus:ring-[rgba(115,180,0,0.2)] transition-all"
             />
           )}
-
-          {/* Textarea */}
-          {currentQuestion.type === 'textarea' && (
-            <Textarea
-              value={answers[currentQuestion.id] || ''}
-              onChange={(e) => handleAnswer(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && isCurrentAnswered() && !isSubmitting) {
-                  e.preventDefault();
-                  handleNext();
-                }
-              }}
-              placeholder={currentQuestion.placeholder}
-              rows={4}
-              className="text-sm sm:text-base p-3 sm:p-4 rx-bg-deep-space text-white border-2 rx-border-slate focus:border-[#73B400] focus:ring-2 focus:ring-[rgba(115,180,0,0.2)] transition-all resize-none"
-            />
-          )}
-
-          {/* Checkbox (for consent) */}
-          {currentQuestion.type === 'checkbox' && (
-            <div className="space-y-4">
-              {currentQuestion.options?.map((option) => {
-                const isChecked = answers[currentQuestion.id] === true || answers[currentQuestion.id] === option.value;
-                return (
-                  <div 
-                    key={option.value}
-                    className={`flex items-center gap-4 p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer ${
-                      isChecked 
-                        ? 'border-[#73B400] bg-[rgba(115,180,0,0.05)] shadow-sm' 
-                        : 'border-[rgba(139,154,173,0.15)] hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
-                    }`}
-                    onClick={() => handleAnswer(isChecked ? false : option.value)}
-                  >
-                    <Checkbox
-                      id={option.value}
-                      checked={isChecked}
-                      onCheckedChange={(checked) => handleAnswer(checked ? option.value : false)}
-                      className="flex-shrink-0 pointer-events-none mt-0.5"
-                    />
-                    <Label 
-                      htmlFor={option.value}
-                      className={`flex-1 cursor-pointer text-base font-medium leading-normal pointer-events-none ${
-                        isChecked ? 'text-white' : 'rx-text-steel'
-                      }`}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {option.label}
-                    </Label>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Conditional Question (e.g., existing_automation follow-up) */}
-          {shouldShowConditional() && currentQuestion.conditionalQuestion && (
-            <div className="mt-6 pt-6 border-t border-[rgba(139,154,173,0.15)]">
-              <Label className="text-base font-semibold text-white mb-4 block">
-                {currentQuestion.conditionalQuestion.question}
-              </Label>
-              {currentQuestion.conditionalQuestion.type === 'textarea' ? (
-                <Textarea
-                  value={answers[`${currentQuestion.id}_conditional`] || ''}
-                  onChange={(e) => setAnswers(prev => ({ ...prev, [`${currentQuestion.id}_conditional`]: e.target.value }))}
-                  placeholder={currentQuestion.conditionalQuestion.placeholder}
-                  rows={4}
-                  className="text-sm sm:text-base p-3 sm:p-4 rx-bg-deep-space text-white border-2 rx-border-slate focus:border-[#73B400] focus:ring-2 focus:ring-[rgba(115,180,0,0.2)] transition-all resize-none"
-                />
-              ) : (
-                <Input
-                  type="text"
-                  value={answers[`${currentQuestion.id}_conditional`] || ''}
-                  onChange={(e) => setAnswers(prev => ({ ...prev, [`${currentQuestion.id}_conditional`]: e.target.value }))}
-                  placeholder={currentQuestion.conditionalQuestion.placeholder}
-                  className="text-sm sm:text-base p-3 sm:p-4 rx-bg-deep-space text-white border-2 rx-border-slate focus:border-[#73B400] focus:ring-2 focus:ring-[rgba(115,180,0,0.2)] transition-all"
-                />
-              )}
-            </div>
-          )}
         </CardContent>
       </Card>
-
-      {/* Context Card Before Contact Questions */}
-      {isContactStep && !isLastContactStep && (
-        <Card className="rx-bg-slate border-2 border-[rgba(115,180,0,0.3)] mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full rx-bg-slate border border-[rgba(115,180,0,0.3)] flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 rx-text-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-base sm:text-lg font-bold text-white mb-3">Almost done!</h3>
-                <p className="text-sm sm:text-base rx-text-steel">We'll send your personalized results to your email.</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Navigation */}
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between pb-4 sm:pb-0">
@@ -825,4 +716,3 @@ export default function AssessmentQuiz() {
     </div>
   );
 }
-
