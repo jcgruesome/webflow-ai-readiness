@@ -309,9 +309,9 @@ export default function AssessmentQuiz() {
     const userEmail = answers.email || '';
 
     return (
-      <div className="w-full max-w-4xl mx-auto space-y-6 sm:space-y-8 px-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="w-full space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* Score Card */}
-        <Card className="border-2 rx-border-slate relative overflow-hidden">
+        <Card className="w-full border-2 rx-border-slate relative overflow-hidden">
           <div className="absolute inset-0 opacity-5 pointer-events-none">
             <div className="rx-animated-gradient w-full h-full"></div>
           </div>
@@ -420,7 +420,7 @@ export default function AssessmentQuiz() {
         </Card>
 
         {/* What's Next */}
-        <Card className="rx-bg-slate border rx-border-slate">
+        <Card className="w-full rx-bg-slate border rx-border-slate">
           <CardHeader>
             <CardTitle className="text-xl sm:text-2xl font-bold mb-6">
               <span className="rx-gradient-text rx-gc-green-blue">What's Next?</span>
@@ -453,7 +453,7 @@ export default function AssessmentQuiz() {
 
   // Quiz Screen
   return (
-    <div className="w-full max-w-4xl mx-auto px-4">
+    <div className="w-full">
       {/* Screen reader announcement */}
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         Question {currentStep + 1} of {totalSteps}. {Math.round(progress)}% complete.
@@ -479,19 +479,19 @@ export default function AssessmentQuiz() {
       </div>
 
       {/* Question Card */}
-      <Card className="border-2 rx-border-slate mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300" role="region" aria-labelledby={`question-${currentStep}`}>
-        <CardHeader className="pb-6">
+      <Card className="w-full border-2 rx-border-slate mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300" role="region" aria-labelledby={`question-${currentStep}`}>
+        <CardHeader className="pb-6 text-center">
           <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-4">
             {currentQuestion.question}
           </CardTitle>
           {currentQuestion.required && (
-            <div className="mb-2">
+            <div className="mb-3">
               <span className="text-xs sm:text-sm rx-text-green font-semibold" aria-label="Required question">Required</span>
             </div>
           )}
           {/* Question Type Indicator */}
           {currentQuestion.type === 'multiple' && (
-            <div className="flex items-center gap-2 text-xs sm:text-sm rx-text-steel mb-2">
+            <div className="flex items-center gap-2 text-xs sm:text-sm rx-text-steel mb-3">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
@@ -499,7 +499,7 @@ export default function AssessmentQuiz() {
             </div>
           )}
           {currentQuestion.type === 'single' && (
-            <div className="flex items-center gap-2 text-xs sm:text-sm rx-text-steel mb-2">
+            <div className="flex items-center gap-2 text-xs sm:text-sm rx-text-steel mb-3">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
@@ -508,13 +508,12 @@ export default function AssessmentQuiz() {
             </div>
           )}
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-4">
           {/* Single Choice */}
           {currentQuestion.type === 'single' && (
             <RadioGroup
               value={answers[currentQuestion.id] || ''}
               onValueChange={handleAnswer}
-              className="space-y-3"
             >
               {currentQuestion.options?.map((option) => {
                 const isSelected = answers[currentQuestion.id] === option.value;
@@ -550,7 +549,7 @@ export default function AssessmentQuiz() {
 
           {/* Multiple Choice */}
           {currentQuestion.type === 'multiple' && (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {currentQuestion.options?.map((option) => {
                 const isChecked = (answers[currentQuestion.id] || []).includes(option.value);
                 return (
