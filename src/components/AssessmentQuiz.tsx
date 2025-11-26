@@ -480,33 +480,33 @@ export default function AssessmentQuiz() {
 
       {/* Question Card */}
       <Card className="border-2 rx-border-slate mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300" role="region" aria-labelledby={`question-${currentStep}`}>
-        <CardHeader className="pb-6 text-center">
-          <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-6">
+        <CardHeader className="pb-6">
+          <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-4">
             {currentQuestion.question}
           </CardTitle>
-          <div className="flex flex-col items-center gap-2">
-            {currentQuestion.required && (
+          {currentQuestion.required && (
+            <div className="mb-2">
               <span className="text-xs sm:text-sm rx-text-green font-semibold" aria-label="Required question">Required</span>
-            )}
-            {/* Question Type Indicator */}
-            {currentQuestion.type === 'multiple' && (
-              <div className="flex items-center justify-center gap-2 text-xs sm:text-sm rx-text-steel">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                <span>Select all that apply</span>
-              </div>
-            )}
-            {currentQuestion.type === 'single' && (
-              <div className="flex items-center justify-center gap-2 text-xs sm:text-sm rx-text-steel">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
-                </svg>
-                <span>Select one</span>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
+          {/* Question Type Indicator */}
+          {currentQuestion.type === 'multiple' && (
+            <div className="flex items-center gap-2 text-xs sm:text-sm rx-text-steel mb-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <span>Select all that apply</span>
+            </div>
+          )}
+          {currentQuestion.type === 'single' && (
+            <div className="flex items-center gap-2 text-xs sm:text-sm rx-text-steel mb-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+              </svg>
+              <span>Select one</span>
+            </div>
+          )}
         </CardHeader>
         <CardContent className="space-y-3">
           {/* Single Choice */}
