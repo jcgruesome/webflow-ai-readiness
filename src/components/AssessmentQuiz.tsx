@@ -298,37 +298,41 @@ export default function AssessmentQuiz() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Show context before contact questions
+  const isContactStep = currentStep >= questions.length - 4 && currentStep < questions.length - 1;
+  const isLastContactStep = currentStep === questions.length - 1;
+
   // Results Screen
   if (showResults) {
     const bandConfig = assessmentConfig.scoreBands[scoreBand];
     const userEmail = answers.email || '';
 
     return (
-      <div className="w-full max-w-4xl mx-auto space-y-8">
+      <div className="w-full max-w-4xl mx-auto space-y-6 sm:space-y-8 px-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* Score Card */}
         <Card className="border-2 rx-border-slate relative overflow-hidden">
           <div className="absolute inset-0 opacity-5 pointer-events-none">
             <div className="rx-animated-gradient w-full h-full"></div>
           </div>
-          <CardHeader className="text-center pb-4 relative z-10">
-            <div className="flex justify-center mb-6">
-              <div className="w-32 h-32 rounded-full rx-gradient-green-yellow flex items-center justify-center">
-                <div className="w-28 h-28 rounded-full rx-bg-slate flex items-center justify-center">
-                  <Award className="w-16 h-16 rx-text-green" />
+          <CardHeader className="text-center pb-4 sm:pb-6 relative z-10">
+            <div className="flex justify-center mb-4 sm:mb-6">
+              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full rx-gradient-green-yellow flex items-center justify-center p-1 shadow-lg">
+                <div className="w-full h-full rounded-full rx-bg-slate flex items-center justify-center">
+                  <Award className="w-12 h-12 sm:w-16 sm:h-16 rx-text-green" />
                 </div>
               </div>
             </div>
-            <CardTitle className="text-4xl md:text-5xl font-black mb-4">
+            <CardTitle className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 sm:mb-4">
               <span className={`${bandConfig.color}`}>{score}</span>
-              <span className="rx-text-steel text-3xl">/100</span>
+              <span className="rx-text-steel text-2xl sm:text-3xl">/100</span>
             </CardTitle>
-            <CardDescription className="text-xl md:text-2xl font-bold rx-gradient-text rx-gc-green-blue">
+            <CardDescription className="text-lg sm:text-xl md:text-2xl font-bold rx-gradient-text rx-gc-green-blue">
               {bandConfig.label}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6 relative z-10">
+          <CardContent className="space-y-4 sm:space-y-6 relative z-10">
             <div className="text-center">
-              <p className="text-base md:text-lg rx-text-steel leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg rx-text-steel leading-relaxed px-2">
                 {scoreBand === 'hot' && "Excellent! You're in a strong position to implement AI automation. Your infrastructure, timeline, and budget align well for a successful deployment."}
                 {scoreBand === 'high' && "Great readiness level! You have solid foundations in place. A few strategic improvements will position you well for AI automation success."}
                 {scoreBand === 'medium' && "Good start! You're building your foundation. Focus on addressing key gaps in processes and infrastructure to maximize AI automation ROI."}
@@ -337,26 +341,26 @@ export default function AssessmentQuiz() {
             </div>
 
             {userEmail && (
-              <div className="text-center p-4 rounded-lg rx-bg-deep-space border rx-border-slate">
-                <p className="text-sm rx-text-steel">
+              <div className="text-center p-3 sm:p-4 rounded-lg rx-bg-deep-space border rx-border-slate">
+                <p className="text-xs sm:text-sm rx-text-steel">
                   📧 {getResultEmailLine(userEmail)}
                 </p>
               </div>
             )}
 
             {/* CTA Based on Score Band */}
-            <div className="space-y-4 pt-4">
+            <div className="space-y-4 pt-2 sm:pt-4">
               {scoreBand === 'hot' && (
                 <div className="space-y-3">
-                  <p className="text-center rx-text-steel font-semibold">🔥 You qualify for our Full Assessment</p>
+                  <p className="text-center rx-text-steel font-semibold text-sm sm:text-base">🔥 You qualify for our Full Assessment</p>
                   <Button
-                    className="w-full text-lg py-6 rx-gradient-green-yellow hover:opacity-90"
+                    className="w-full text-base sm:text-lg py-5 sm:py-6 rx-btn-primary font-bold min-h-[48px] sm:min-h-[56px]"
                     onClick={() => window.open(assessmentConfig.calendly.hotLeadUrl, '_blank')}
                   >
-                    <ExternalLink className="mr-2 h-5 w-5" />
+                    <ExternalLink className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                     Book Your 30-Min Full Assessment
                   </Button>
-                  <p className="text-xs text-center rx-text-steel">
+                  <p className="text-xs sm:text-sm text-center rx-text-steel">
                     Get prioritized quick wins, infrastructure validation, and a tactical plan with cost estimates
                   </p>
                 </div>
@@ -364,12 +368,12 @@ export default function AssessmentQuiz() {
 
               {scoreBand === 'high' && (
                 <div className="space-y-3">
-                  <p className="text-center rx-text-steel font-semibold">Let's explore opportunities together</p>
+                  <p className="text-center rx-text-steel font-semibold text-sm sm:text-base">Let's explore opportunities together</p>
                   <Button
-                    className="w-full text-lg py-6 rx-btn-primary"
+                    className="w-full text-base sm:text-lg py-5 sm:py-6 rx-btn-primary font-bold min-h-[48px] sm:min-h-[56px]"
                     onClick={() => window.open(assessmentConfig.calendly.highLeadUrl, '_blank')}
                   >
-                    <ExternalLink className="mr-2 h-5 w-5" />
+                    <ExternalLink className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                     Schedule a Discovery Call
                   </Button>
                 </div>
@@ -377,22 +381,22 @@ export default function AssessmentQuiz() {
 
               {(scoreBand === 'medium' || scoreBand === 'low') && (
                 <div className="space-y-3">
-                  <p className="text-center rx-text-steel font-semibold">Build your foundation first</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <p className="text-center rx-text-steel font-semibold text-sm sm:text-base">Build your foundation first</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <Button
                       variant="outline"
-                      className="py-6"
+                      className="py-5 sm:py-6 min-h-[48px] sm:min-h-[56px] rx-btn-secondary border-rx-border-slate rx-text-steel hover:border-[#73B400] hover:text-white"
                       onClick={() => window.open(assessmentConfig.resources.foundationalResourcesPage, '_blank')}
                     >
-                      <BookOpen className="mr-2 h-5 w-5" />
+                      <BookOpen className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                       Access Resources
                     </Button>
                     <Button
                       variant="outline"
-                      className="py-6"
+                      className="py-5 sm:py-6 min-h-[48px] sm:min-h-[56px] rx-btn-secondary border-rx-border-slate rx-text-steel hover:border-[#73B400] hover:text-white"
                       onClick={() => window.open(assessmentConfig.events.webinarRegistrationUrl, '_blank')}
                     >
-                      <Video className="mr-2 h-5 w-5" />
+                      <Video className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                       Join Webinar
                     </Button>
                   </div>
@@ -401,7 +405,7 @@ export default function AssessmentQuiz() {
 
               <Button
                 variant="ghost"
-                className="w-full mt-6"
+                className="w-full mt-4 sm:mt-6 rx-text-steel hover:text-white hover:bg-[rgba(115,180,0,0.1)]"
                 onClick={handleRetake}
               >
                 <RotateCcw className="mr-2 h-4 w-4" />
@@ -414,22 +418,22 @@ export default function AssessmentQuiz() {
         {/* What's Next */}
         <Card className="rx-bg-slate border rx-border-slate">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">
+            <CardTitle className="text-xl sm:text-2xl font-bold">
               <span className="rx-gradient-text rx-gc-green-blue">What's Next?</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 sm:space-y-4">
             <div className="space-y-3 rx-text-steel">
-              <p className="flex items-start gap-3">
-                <span className="rx-text-green font-bold">1.</span>
+              <p className="flex items-start gap-3 text-sm sm:text-base">
+                <span className="rx-text-green font-bold flex-shrink-0">1.</span>
                 <span>Our team will review your assessment within {bandConfig.sla}</span>
               </p>
-              <p className="flex items-start gap-3">
-                <span className="rx-text-blue font-bold">2.</span>
+              <p className="flex items-start gap-3 text-sm sm:text-base">
+                <span className="rx-text-blue font-bold flex-shrink-0">2.</span>
                 <span>You'll receive personalized recommendations based on your responses</span>
               </p>
-              <p className="flex items-start gap-3">
-                <span className="rx-text-green font-bold">3.</span>
+              <p className="flex items-start gap-3 text-sm sm:text-base">
+                <span className="rx-text-green font-bold flex-shrink-0">3.</span>
                 <span>
                   {scoreBand === 'hot' || scoreBand === 'high' 
                     ? "We'll reach out to schedule a detailed consultation"
@@ -445,83 +449,123 @@ export default function AssessmentQuiz() {
 
   // Quiz Screen
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto px-4">
+      {/* Screen reader announcement */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        Question {currentStep + 1} of {totalSteps}. {Math.round(progress)}% complete.
+      </div>
+      
       {/* Progress Bar */}
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-sm font-semibold rx-text-steel">
+      <div className="mb-6 sm:mb-8" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100} aria-label="Assessment progress">
+        <div className="flex justify-between items-center mb-2 sm:mb-3">
+          <span className="text-xs sm:text-sm font-semibold rx-text-steel">
             Question {currentStep + 1} of {totalSteps}
           </span>
-          <span className="text-sm font-semibold rx-text-green">
+          <span className="text-xs sm:text-sm font-semibold rx-text-green">
             {Math.round(progress)}% Complete
           </span>
         </div>
-        <div className="w-full h-3 rx-bg-slate rounded-full overflow-hidden">
+        <div className="w-full h-2 sm:h-3 rx-bg-slate rounded-full overflow-hidden">
           <div 
-            className="h-full rx-gradient-green-yellow transition-all duration-500 ease-out rounded-full"
+            className="h-full rx-gradient-green-yellow transition-all duration-500 ease-out rounded-full shadow-sm"
             style={{ width: `${progress}%` }}
+            aria-hidden="true"
           />
         </div>
       </div>
 
       {/* Question Card */}
-      <Card className="border-2 rx-border-slate mb-6">
-        <CardHeader className="pb-4">
-          <div className="flex items-start justify-between gap-4 mb-2">
-            <CardTitle className="text-xl md:text-2xl font-bold rx-text-steel leading-tight flex-1">
+      <Card className="border-2 rx-border-slate mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300" role="region" aria-labelledby={`question-${currentStep}`}>
+        <CardHeader className="pb-4 sm:pb-6">
+          <div className="flex items-start justify-between gap-4 mb-3">
+            <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight flex-1">
               {currentQuestion.question}
             </CardTitle>
             {currentQuestion.required && (
-              <span className="text-sm rx-text-green font-semibold whitespace-nowrap flex-shrink-0">Required</span>
+              <span className="text-xs sm:text-sm rx-text-green font-semibold whitespace-nowrap flex-shrink-0" aria-label="Required question">Required</span>
             )}
           </div>
+          {/* Question Type Indicator */}
+          {currentQuestion.type === 'multiple' && (
+            <div className="flex items-center gap-2 text-xs sm:text-sm rx-text-steel mb-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <span>Select all that apply</span>
+            </div>
+          )}
+          {currentQuestion.type === 'single' && (
+            <div className="flex items-center gap-2 text-xs sm:text-sm rx-text-steel mb-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+              </svg>
+              <span>Select one</span>
+            </div>
+          )}
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-3 sm:space-y-4">
           {/* Single Choice */}
           {currentQuestion.type === 'single' && (
             <RadioGroup
               value={answers[currentQuestion.id] || ''}
               onValueChange={handleAnswer}
             >
-              <div className="space-y-4">
-                {currentQuestion.options?.map((option) => (
-                  <div 
-                    key={option.value}
-                    className="flex items-center space-x-4 p-4 rounded-lg border-2 rx-border-slate hover:border-[#73B400] transition-all cursor-pointer"
-                    onClick={() => handleAnswer(option.value)}
-                  >
-                    <RadioGroupItem value={option.value} id={option.value} />
-                    <Label 
-                      htmlFor={option.value} 
-                      className="flex-1 cursor-pointer text-base rx-text-steel font-medium"
+              <div className="space-y-3">
+                {currentQuestion.options?.map((option) => {
+                  const isSelected = answers[currentQuestion.id] === option.value;
+                  return (
+                    <div 
+                      key={option.value}
+                      className={`flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 rounded-lg border-2 transition-all cursor-pointer ${
+                        isSelected 
+                          ? 'border-[#73B400] bg-[rgba(115,180,0,0.05)] shadow-sm' 
+                          : 'rx-border-slate hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
+                      }`}
+                      onClick={() => handleAnswer(option.value)}
                     >
-                      {option.label}
-                    </Label>
-                  </div>
-                ))}
+                      <RadioGroupItem value={option.value} id={option.value} className="flex-shrink-0" />
+                      <Label 
+                        htmlFor={option.value} 
+                        className={`flex-1 cursor-pointer text-sm sm:text-base font-medium ${
+                          isSelected ? 'text-white' : 'rx-text-steel'
+                        }`}
+                      >
+                        {option.label}
+                      </Label>
+                    </div>
+                  );
+                })}
               </div>
             </RadioGroup>
           )}
 
           {/* Multiple Choice */}
           {currentQuestion.type === 'multiple' && (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {currentQuestion.options?.map((option) => {
                 const isChecked = (answers[currentQuestion.id] || []).includes(option.value);
                 return (
                   <div 
                     key={option.value}
-                    className="flex items-center space-x-4 p-4 rounded-lg border-2 rx-border-slate hover:border-[#73B400] transition-all cursor-pointer"
+                    className={`flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 rounded-lg border-2 transition-all cursor-pointer ${
+                      isChecked 
+                        ? 'border-[#73B400] bg-[rgba(115,180,0,0.05)] shadow-sm' 
+                        : 'rx-border-slate hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
+                    }`}
                     onClick={() => handleMultipleChoice(option.value, !isChecked)}
                   >
                     <Checkbox
                       id={option.value}
                       checked={isChecked}
                       onCheckedChange={(checked) => handleMultipleChoice(option.value, checked as boolean)}
+                      className="flex-shrink-0"
                     />
                     <Label 
                       htmlFor={option.value}
-                      className="flex-1 cursor-pointer text-base rx-text-steel font-medium"
+                      className={`flex-1 cursor-pointer text-sm sm:text-base font-medium ${
+                        isChecked ? 'text-white' : 'rx-text-steel'
+                      }`}
                     >
                       {option.label}
                     </Label>
@@ -538,7 +582,7 @@ export default function AssessmentQuiz() {
               value={answers[currentQuestion.id] || ''}
               onChange={(e) => handleAnswer(e.target.value)}
               placeholder={currentQuestion.placeholder}
-              className="text-base p-4 rx-bg-deep-space rx-text-steel border-2 rx-border-slate focus:border-[#73B400]"
+              className="text-sm sm:text-base p-3 sm:p-4 rx-bg-deep-space text-white border-2 rx-border-slate focus:border-[#73B400] focus:ring-2 focus:ring-[rgba(115,180,0,0.2)] transition-all"
             />
           )}
 
@@ -549,7 +593,7 @@ export default function AssessmentQuiz() {
               value={answers[currentQuestion.id] || ''}
               onChange={(e) => handleAnswer(e.target.value)}
               placeholder={currentQuestion.placeholder}
-              className="text-base p-4 rx-bg-deep-space rx-text-steel border-2 rx-border-slate focus:border-[#73B400]"
+              className="text-sm sm:text-base p-3 sm:p-4 rx-bg-deep-space text-white border-2 rx-border-slate focus:border-[#73B400] focus:ring-2 focus:ring-[rgba(115,180,0,0.2)] transition-all"
             />
           )}
 
@@ -560,43 +604,62 @@ export default function AssessmentQuiz() {
               onChange={(e) => handleAnswer(e.target.value)}
               placeholder={currentQuestion.placeholder}
               rows={4}
-              className="text-base p-4 rx-bg-deep-space rx-text-steel border-2 rx-border-slate focus:border-[#73B400]"
+              className="text-sm sm:text-base p-3 sm:p-4 rx-bg-deep-space text-white border-2 rx-border-slate focus:border-[#73B400] focus:ring-2 focus:ring-[rgba(115,180,0,0.2)] transition-all resize-none"
             />
           )}
         </CardContent>
       </Card>
 
+      {/* Context Card Before Contact Questions */}
+      {isContactStep && !isLastContactStep && (
+        <Card className="rx-bg-slate border-2 border-[rgba(115,180,0,0.3)] mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full rx-gradient-text rx-gc-green-yellow flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-base sm:text-lg font-bold text-white mb-1">Almost done!</h3>
+                <p className="text-sm sm:text-base rx-text-steel">We'll send your personalized results to your email.</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Navigation */}
-      <div className="flex gap-4 justify-between">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between pb-4 sm:pb-0">
         <Button
           variant="outline"
           onClick={handlePrevious}
           disabled={currentStep === 0}
-          className="px-8 py-6 text-base"
+          className="w-full sm:w-auto px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base min-h-[48px] sm:min-h-[56px] rx-btn-secondary border-rx-border-slate rx-text-steel hover:border-[#73B400] hover:text-white disabled:opacity-30"
         >
-          <ArrowLeft className="mr-2 h-5 w-5" />
+          <ArrowLeft className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
           Previous
         </Button>
 
         <Button
           onClick={handleNext}
           disabled={!isCurrentAnswered() || isSubmitting}
-          className="px-8 py-6 text-base rx-btn-primary"
+          className="w-full sm:w-auto px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base min-h-[48px] sm:min-h-[56px] rx-btn-primary font-bold"
         >
           {isSubmitting ? (
             <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
               Calculating...
             </>
           ) : currentStep === totalSteps - 1 ? (
             <>
               View Results
-              <Award className="ml-2 h-5 w-5" />
+              <Award className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </>
           ) : (
             <>
               Next
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </>
           )}
         </Button>
@@ -604,3 +667,4 @@ export default function AssessmentQuiz() {
     </div>
   );
 }
+
