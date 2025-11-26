@@ -418,7 +418,7 @@ export default function AssessmentQuiz() {
         {/* What's Next */}
         <Card className="rx-bg-slate border rx-border-slate">
           <CardHeader>
-            <CardTitle className="text-xl sm:text-2xl font-bold">
+            <CardTitle className="text-xl sm:text-2xl font-bold mb-0">
               <span className="rx-gradient-text rx-gc-green-blue">What's Next?</span>
             </CardTitle>
           </CardHeader>
@@ -517,17 +517,17 @@ export default function AssessmentQuiz() {
                   return (
                     <div 
                       key={option.value}
-                      className={`flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 rounded-lg border-2 transition-all cursor-pointer ${
+                      className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer ${
                         isSelected 
                           ? 'border-[#73B400] bg-[rgba(115,180,0,0.05)] shadow-sm' 
                           : 'rx-border-slate hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
                       }`}
                       onClick={() => handleAnswer(option.value)}
                     >
-                      <RadioGroupItem value={option.value} id={option.value} className="flex-shrink-0" />
+                      <RadioGroupItem value={option.value} id={option.value} className="flex-shrink-0 mt-0.5" />
                       <Label 
                         htmlFor={option.value} 
-                        className={`flex-1 cursor-pointer text-sm sm:text-base font-medium ${
+                        className={`flex-1 cursor-pointer text-sm sm:text-base font-medium leading-normal ${
                           isSelected ? 'text-white' : 'rx-text-steel'
                         }`}
                       >
@@ -548,7 +548,7 @@ export default function AssessmentQuiz() {
                 return (
                   <div 
                     key={option.value}
-                    className={`flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 rounded-lg border-2 transition-all cursor-pointer ${
+                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer ${
                       isChecked 
                         ? 'border-[#73B400] bg-[rgba(115,180,0,0.05)] shadow-sm' 
                         : 'rx-border-slate hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
@@ -559,11 +559,11 @@ export default function AssessmentQuiz() {
                       id={option.value}
                       checked={isChecked}
                       onCheckedChange={(checked) => handleMultipleChoice(option.value, checked as boolean)}
-                      className="flex-shrink-0"
+                      className="flex-shrink-0 mt-0.5"
                     />
                     <Label 
                       htmlFor={option.value}
-                      className={`flex-1 cursor-pointer text-sm sm:text-base font-medium ${
+                      className={`flex-1 cursor-pointer text-sm sm:text-base font-medium leading-normal ${
                         isChecked ? 'text-white' : 'rx-text-steel'
                       }`}
                     >
@@ -615,8 +615,8 @@ export default function AssessmentQuiz() {
         <Card className="rx-bg-slate border-2 border-[rgba(115,180,0,0.3)] mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full rx-gradient-text rx-gc-green-yellow flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-8 h-8 rounded-full rx-bg-slate border border-[rgba(115,180,0,0.3)] flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 rx-text-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
