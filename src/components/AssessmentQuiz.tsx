@@ -6,7 +6,7 @@ import { Label } from './ui/label';
 import { Checkbox } from './ui/checkbox';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
-import { Award, ArrowRight, ArrowLeft, RotateCcw, Loader2, ExternalLink, BookOpen, Video } from 'lucide-react';
+import { Award, ArrowRight, ArrowLeft, RotateCcw, Loader2, ExternalLink } from 'lucide-react';
 import { baseUrl } from '../lib/base-url';
 import { assessmentConfig, getResultEmailLine } from '../lib/assessment-config';
 
@@ -315,7 +315,7 @@ export default function AssessmentQuiz() {
           <div className="absolute inset-0 opacity-5 pointer-events-none">
             <div className="rx-animated-gradient w-full h-full"></div>
           </div>
-          <CardHeader className="text-center pb-4 sm:pb-6 relative z-10">
+          <CardHeader className="text-center pb-4 sm:pb-6 relative z-10 flex flex-col items-center w-full">
             <div className="flex justify-center mb-4 sm:mb-6">
               <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full rx-gradient-green-yellow flex items-center justify-center p-1 shadow-lg">
                 <div className="w-full h-full rounded-full rx-bg-slate flex items-center justify-center">
@@ -340,14 +340,6 @@ export default function AssessmentQuiz() {
                 {scoreBand === 'low' && "Early stage exploration. Build your foundation first, then explore how ReshapeX can help you implement smarter AI agents that deliver better outcomes and faster revenue."}
               </p>
             </div>
-
-            {userEmail && (
-              <div className="text-center p-3 sm:p-4 rounded-lg rx-bg-deep-space border rx-border-slate">
-                <p className="text-xs sm:text-sm rx-text-steel">
-                  📧 {getResultEmailLine(userEmail)}
-                </p>
-              </div>
-            )}
 
             {/* CTA Based on Score Band */}
             <div className="space-y-4 pt-2 sm:pt-4">
@@ -386,24 +378,6 @@ export default function AssessmentQuiz() {
               {(scoreBand === 'medium' || scoreBand === 'low') && (
                 <div className="space-y-3">
                   <p className="text-center rx-text-steel font-semibold text-sm sm:text-base">Build your foundation first</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <Button
-                      variant="outline"
-                      className="py-5 sm:py-6 min-h-[48px] sm:min-h-[56px] rx-btn-secondary border-rx-border-slate rx-text-steel hover:border-[#73B400] hover:text-white"
-                      onClick={() => window.open(assessmentConfig.resources.foundationalResourcesPage, '_blank')}
-                    >
-                      <BookOpen className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      Access Resources
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="py-5 sm:py-6 min-h-[48px] sm:min-h-[56px] rx-btn-secondary border-rx-border-slate rx-text-steel hover:border-[#73B400] hover:text-white"
-                      onClick={() => window.open(assessmentConfig.events.webinarRegistrationUrl, '_blank')}
-                    >
-                      <Video className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      Join Webinar
-                    </Button>
-                  </div>
                 </div>
               )}
 
@@ -421,22 +395,22 @@ export default function AssessmentQuiz() {
 
         {/* What's Next */}
         <Card className="w-full rx-bg-slate border rx-border-slate">
-          <CardHeader>
-            <CardTitle className="text-xl sm:text-2xl font-bold mb-6">
+          <CardHeader className="flex flex-col items-start w-full pb-6">
+            <CardTitle className="text-xl sm:text-2xl font-bold mb-6 w-full">
               <span className="rx-gradient-text rx-gc-green-blue">What's Next?</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 sm:space-y-4">
-            <div className="space-y-3 rx-text-steel">
-              <p className="flex items-start gap-3 text-sm sm:text-base">
+          <CardContent className="space-y-4 sm:space-y-5">
+            <div className="space-y-4 sm:space-y-5 rx-text-steel">
+              <p className="flex items-start gap-3 text-sm sm:text-base leading-relaxed">
                 <span className="rx-text-green font-bold flex-shrink-0">1.</span>
                 <span>Our team will review your assessment within {bandConfig.sla}</span>
               </p>
-              <p className="flex items-start gap-3 text-sm sm:text-base">
+              <p className="flex items-start gap-3 text-sm sm:text-base leading-relaxed">
                 <span className="rx-text-blue font-bold flex-shrink-0">2.</span>
                 <span>You'll receive personalized recommendations showing where smarter AI agents can deliver better outcomes and faster revenue</span>
               </p>
-              <p className="flex items-start gap-3 text-sm sm:text-base">
+              <p className="flex items-start gap-3 text-sm sm:text-base leading-relaxed">
                 <span className="rx-text-green font-bold flex-shrink-0">3.</span>
                 <span>
                   {scoreBand === 'hot' || scoreBand === 'high' 
@@ -589,6 +563,12 @@ export default function AssessmentQuiz() {
               type="text"
               value={answers[currentQuestion.id] || ''}
               onChange={(e) => handleAnswer(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && isCurrentAnswered() && !isSubmitting) {
+                  e.preventDefault();
+                  handleNext();
+                }
+              }}
               placeholder={currentQuestion.placeholder}
               className="text-sm sm:text-base p-3 sm:p-4 rx-bg-deep-space text-white border-2 rx-border-slate focus:border-[#73B400] focus:ring-2 focus:ring-[rgba(115,180,0,0.2)] transition-all"
             />
@@ -600,6 +580,12 @@ export default function AssessmentQuiz() {
               type="email"
               value={answers[currentQuestion.id] || ''}
               onChange={(e) => handleAnswer(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && isCurrentAnswered() && !isSubmitting) {
+                  e.preventDefault();
+                  handleNext();
+                }
+              }}
               placeholder={currentQuestion.placeholder}
               className="text-sm sm:text-base p-3 sm:p-4 rx-bg-deep-space text-white border-2 rx-border-slate focus:border-[#73B400] focus:ring-2 focus:ring-[rgba(115,180,0,0.2)] transition-all"
             />
@@ -610,6 +596,12 @@ export default function AssessmentQuiz() {
             <Textarea
               value={answers[currentQuestion.id] || ''}
               onChange={(e) => handleAnswer(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && isCurrentAnswered() && !isSubmitting) {
+                  e.preventDefault();
+                  handleNext();
+                }
+              }}
               placeholder={currentQuestion.placeholder}
               rows={4}
               className="text-sm sm:text-base p-3 sm:p-4 rx-bg-deep-space text-white border-2 rx-border-slate focus:border-[#73B400] focus:ring-2 focus:ring-[rgba(115,180,0,0.2)] transition-all resize-none"
