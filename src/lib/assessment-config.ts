@@ -139,7 +139,7 @@ export const assessmentConfig = {
   copy: {
     heroTitle: 'AI Readiness Assessment',
     heroSubtitle: 'This 2‑minute AI Readiness Assessment provides a quick diagnostic and readiness score to help you decide whether a deeper infrastructure & operations assessment is right for your team.',
-    heroDescription: 'The results show high‑level opportunity areas; to get prioritized quick wins and a tactical plan we'll run a full assessment together.',
+    heroDescription: 'The results show high-level opportunity areas; to get prioritized quick wins and a tactical plan we\'ll run a full assessment together.',
     
     whyFullAssessment: {
       title: 'Why a Full Assessment?',
