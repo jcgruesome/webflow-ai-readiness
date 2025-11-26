@@ -453,7 +453,7 @@ export default function AssessmentQuiz() {
 
   // Quiz Screen
   return (
-    <div className="w-full max-w-full">
+    <div className="w-full">
       {/* Screen reader announcement */}
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         Question {currentStep + 1} of {totalSteps}. {Math.round(progress)}% complete.
@@ -480,7 +480,7 @@ export default function AssessmentQuiz() {
 
       {/* Question Card */}
       <Card className="w-full border-2 rx-border-slate mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300" role="region" aria-labelledby={`question-${currentStep}`}>
-        <CardHeader className="pb-6 text-center flex flex-col items-center" style={{ display: 'flex' }}>
+        <CardHeader className="pb-6 text-center flex flex-col items-center w-full">
           <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-4">
             {currentQuestion.question}
           </CardTitle>
