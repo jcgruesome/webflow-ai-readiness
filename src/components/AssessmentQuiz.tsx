@@ -481,7 +481,7 @@ export default function AssessmentQuiz() {
       {/* Question Card */}
       <Card className="w-full border-2 rx-border-slate mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300" role="region" aria-labelledby={`question-${currentStep}`}>
         <CardHeader className="pb-6 text-left flex flex-col items-start w-full">
-          <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-4">
+          <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-6">
             {currentQuestion.question}
           </CardTitle>
           {currentQuestion.required && (
@@ -629,7 +629,7 @@ export default function AssessmentQuiz() {
                 </svg>
               </div>
               <div>
-                <h3 className="text-base sm:text-lg font-bold text-white mb-1">Almost done!</h3>
+                <h3 className="text-base sm:text-lg font-bold text-white mb-3">Almost done!</h3>
                 <p className="text-sm sm:text-base rx-text-steel">We'll send your personalized results to your email.</p>
               </div>
             </div>
