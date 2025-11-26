@@ -453,7 +453,7 @@ export default function AssessmentQuiz() {
 
   // Quiz Screen
   return (
-    <div className="w-full">
+    <div className="w-full max-w-full">
       {/* Screen reader announcement */}
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         Question {currentStep + 1} of {totalSteps}. {Math.round(progress)}% complete.
