@@ -531,7 +531,7 @@ export default function AssessmentQuiz() {
                     <RadioGroupItem 
                       value={option.value} 
                       id={option.value} 
-                      className="flex-shrink-0 pointer-events-none" 
+                      className="flex-shrink-0 pointer-events-none mt-0.5" 
                     />
                     <Label 
                       htmlFor={option.value} 
@@ -567,7 +567,7 @@ export default function AssessmentQuiz() {
                       id={option.value}
                       checked={isChecked}
                       onCheckedChange={(checked) => handleMultipleChoice(option.value, checked as boolean)}
-                      className="flex-shrink-0 pointer-events-none"
+                      className="flex-shrink-0 pointer-events-none mt-0.5"
                     />
                     <Label 
                       htmlFor={option.value}
