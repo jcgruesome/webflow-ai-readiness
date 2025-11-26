@@ -45,7 +45,8 @@ const questions: Question[] = [
       { value: 'mostly_manual', label: 'Some tools, but lots of manual steps', points: 5 },
       { value: 'semi_automated', label: 'Semi-automated with workflows', points: 10 },
       { value: 'mostly_automated', label: 'Mostly automated but not AI-powered', points: 15 },
-      { value: 'fully_automated', label: 'Already using AI/automation extensively', points: 20 },
+      { value: 'ai_but_needs_tuning', label: 'Using AI but need help tuning and maintaining it', points: 20 },
+      { value: 'fully_automated', label: 'Already using AI/automation extensively', points: 15 },
     ],
   },
   {
@@ -122,18 +123,18 @@ const questions: Question[] = [
   },
   {
     id: 'assessment_q9_response',
-    question: 'What would successful AI automation look like for your company?',
+    question: 'What outcomes matter most for your operations?',
     type: 'multiple',
     required: true,
     options: [
+      { value: 'faster_revenue', label: 'Faster revenue generation and sales cycles', points: 15 },
+      { value: 'better_outcomes', label: 'Better customer outcomes and satisfaction', points: 15 },
+      { value: 'smarter_agents', label: 'Smarter agents that learn and improve over time', points: 15 },
+      { value: 'ability_to_scale', label: 'Ability to scale without adding headcount', points: 15 },
+      { value: 'reduced_cost', label: 'Reduced operational costs', points: 10 },
       { value: 'faster_response', label: 'Faster response times to customers', points: 10 },
       { value: 'consistent_service', label: 'More consistent service quality', points: 10 },
-      { value: 'ability_to_scale', label: 'Ability to scale without adding headcount', points: 15 },
-      { value: 'reduced_cost', label: 'Reduced operational costs', points: 15 },
-      { value: 'better_use_of_time', label: 'Better use of existing team\'s time', points: 10 },
       { value: 'improved_accuracy', label: 'Improved accuracy and fewer errors', points: 10 },
-      { value: '24_7_availability', label: '24/7 availability', points: 5 },
-      { value: 'comp_advantage', label: 'Competitive advantage', points: 10 },
     ],
   },
   // Contact info questions at the end
@@ -177,7 +178,7 @@ export default function AssessmentQuiz() {
 
   const currentQuestion = questions[currentStep];
   const totalSteps = questions.length;
-  const progress = ((currentStep + 1) / totalSteps) * 100;
+  const progress = (currentStep / totalSteps) * 100;
 
   // Check if current question is answered
   const isCurrentAnswered = () => {
@@ -333,10 +334,10 @@ export default function AssessmentQuiz() {
           <CardContent className="space-y-4 sm:space-y-6 relative z-10">
             <div className="text-center">
               <p className="text-sm sm:text-base md:text-lg rx-text-steel leading-relaxed px-2">
-                {scoreBand === 'hot' && "Excellent! You're in a strong position to implement AI automation. Your infrastructure, timeline, and budget align well for a successful deployment."}
-                {scoreBand === 'high' && "Great readiness level! You have solid foundations in place. A few strategic improvements will position you well for AI automation success."}
-                {scoreBand === 'medium' && "Good start! You're building your foundation. Focus on addressing key gaps in processes and infrastructure to maximize AI automation ROI."}
-                {scoreBand === 'low' && "Early stage exploration. Focus on foundational improvements in processes, systems, and team readiness before pursuing AI automation."}
+                {scoreBand === 'hot' && "Excellent! You're ready for smarter AI agents that deliver better outcomes and faster revenue. Our full assessment will identify exactly where we can build, tune, and maintain AI solutions for your operations."}
+                {scoreBand === 'high' && "Great readiness level! You have solid foundations for implementing smarter AI agents. Our full assessment will show you how to achieve better outcomes and faster revenue with AI that we build, tune, and maintain."}
+                {scoreBand === 'medium' && "Good start! You're building your foundation. Focus on addressing key gaps, then consider our full assessment to discover how smarter AI agents can improve outcomes and accelerate revenue."}
+                {scoreBand === 'low' && "Early stage exploration. Build your foundation first, then explore how ReshapeX can help you implement smarter AI agents that deliver better outcomes and faster revenue."}
               </p>
             </div>
 
@@ -358,17 +359,17 @@ export default function AssessmentQuiz() {
                     onClick={() => window.open(assessmentConfig.calendly.hotLeadUrl, '_blank')}
                   >
                     <ExternalLink className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                    Book Your 30-Min Full Assessment
+                    Book Your Full Assessment
                   </Button>
                   <p className="text-xs sm:text-sm text-center rx-text-steel">
-                    Get prioritized quick wins, infrastructure validation, and a tactical plan with cost estimates
+                    Discover how we build, tune, and maintain smarter AI agents that deliver better outcomes and faster revenue
                   </p>
                 </div>
               )}
 
               {scoreBand === 'high' && (
                 <div className="space-y-3">
-                  <p className="text-center rx-text-steel font-semibold text-sm sm:text-base">Let's explore opportunities together</p>
+                  <p className="text-center rx-text-steel font-semibold text-sm sm:text-base">Let's explore how smarter agents can improve your outcomes</p>
                   <Button
                     className="w-full text-base sm:text-lg py-5 sm:py-6 rx-btn-primary font-bold min-h-[48px] sm:min-h-[56px]"
                     onClick={() => window.open(assessmentConfig.calendly.highLeadUrl, '_blank')}
@@ -376,6 +377,9 @@ export default function AssessmentQuiz() {
                     <ExternalLink className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                     Schedule a Discovery Call
                   </Button>
+                  <p className="text-xs sm:text-sm text-center rx-text-steel">
+                    Learn how we build, tune, and maintain AI agents tailored to your operations
+                  </p>
                 </div>
               )}
 
@@ -430,14 +434,14 @@ export default function AssessmentQuiz() {
               </p>
               <p className="flex items-start gap-3 text-sm sm:text-base">
                 <span className="rx-text-blue font-bold flex-shrink-0">2.</span>
-                <span>You'll receive personalized recommendations based on your responses</span>
+                <span>You'll receive personalized recommendations showing where smarter AI agents can deliver better outcomes and faster revenue</span>
               </p>
               <p className="flex items-start gap-3 text-sm sm:text-base">
                 <span className="rx-text-green font-bold flex-shrink-0">3.</span>
                 <span>
                   {scoreBand === 'hot' || scoreBand === 'high' 
-                    ? "We'll reach out to schedule a detailed consultation"
-                    : "You'll get access to resources tailored to your readiness level"}
+                    ? "We'll reach out to schedule a full assessment where we'll identify how to build, tune, and maintain AI agents for your operations"
+                    : "You'll get access to resources about building smarter AI agents that improve outcomes and accelerate revenue"}
                 </span>
               </p>
             </div>
@@ -476,33 +480,33 @@ export default function AssessmentQuiz() {
 
       {/* Question Card */}
       <Card className="border-2 rx-border-slate mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300" role="region" aria-labelledby={`question-${currentStep}`}>
-        <CardHeader className="pb-4 sm:pb-6">
-          <div className="flex items-start justify-between gap-4 mb-3">
-            <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight flex-1">
-              {currentQuestion.question}
-            </CardTitle>
+        <CardHeader className="pb-4 sm:pb-6 text-center">
+          <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-4">
+            {currentQuestion.question}
+          </CardTitle>
+          <div className="flex flex-col items-center gap-2">
             {currentQuestion.required && (
-              <span className="text-xs sm:text-sm rx-text-green font-semibold whitespace-nowrap flex-shrink-0" aria-label="Required question">Required</span>
+              <span className="text-xs sm:text-sm rx-text-green font-semibold" aria-label="Required question">Required</span>
+            )}
+            {/* Question Type Indicator */}
+            {currentQuestion.type === 'multiple' && (
+              <div className="flex items-center justify-center gap-2 text-xs sm:text-sm rx-text-steel">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <span>Select all that apply</span>
+              </div>
+            )}
+            {currentQuestion.type === 'single' && (
+              <div className="flex items-center justify-center gap-2 text-xs sm:text-sm rx-text-steel">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+                </svg>
+                <span>Select one</span>
+              </div>
             )}
           </div>
-          {/* Question Type Indicator */}
-          {currentQuestion.type === 'multiple' && (
-            <div className="flex items-center gap-2 text-xs sm:text-sm rx-text-steel mb-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-              <span>Select all that apply</span>
-            </div>
-          )}
-          {currentQuestion.type === 'single' && (
-            <div className="flex items-center gap-2 text-xs sm:text-sm rx-text-steel mb-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
-              </svg>
-              <span>Select one</span>
-            </div>
-          )}
         </CardHeader>
         <CardContent className="space-y-3 sm:space-y-4">
           {/* Single Choice */}
@@ -524,12 +528,17 @@ export default function AssessmentQuiz() {
                       }`}
                       onClick={() => handleAnswer(option.value)}
                     >
-                      <RadioGroupItem value={option.value} id={option.value} className="flex-shrink-0 mt-0.5" />
+                      <RadioGroupItem 
+                        value={option.value} 
+                        id={option.value} 
+                        className="flex-shrink-0 mt-0.5 pointer-events-none" 
+                      />
                       <Label 
                         htmlFor={option.value} 
-                        className={`flex-1 cursor-pointer text-sm sm:text-base font-medium leading-normal ${
+                        className={`flex-1 cursor-pointer text-sm sm:text-base font-medium leading-normal pointer-events-none ${
                           isSelected ? 'text-white' : 'rx-text-steel'
                         }`}
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {option.label}
                       </Label>
@@ -559,13 +568,14 @@ export default function AssessmentQuiz() {
                       id={option.value}
                       checked={isChecked}
                       onCheckedChange={(checked) => handleMultipleChoice(option.value, checked as boolean)}
-                      className="flex-shrink-0 mt-0.5"
+                      className="flex-shrink-0 mt-0.5 pointer-events-none"
                     />
                     <Label 
                       htmlFor={option.value}
-                      className={`flex-1 cursor-pointer text-sm sm:text-base font-medium leading-normal ${
+                      className={`flex-1 cursor-pointer text-sm sm:text-base font-medium leading-normal pointer-events-none ${
                         isChecked ? 'text-white' : 'rx-text-steel'
                       }`}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       {option.label}
                     </Label>
