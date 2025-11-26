@@ -323,11 +323,11 @@ export default function AssessmentQuiz() {
                 </div>
               </div>
             </div>
-            <CardTitle className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 sm:mb-4">
+            <CardTitle className="text-3xl sm:text-4xl md:text-5xl font-black mb-6">
               <span className={`${bandConfig.color}`}>{score}</span>
               <span className="rx-text-steel text-2xl sm:text-3xl">/100</span>
             </CardTitle>
-            <CardDescription className="text-lg sm:text-xl md:text-2xl font-bold rx-gradient-text rx-gc-green-blue">
+            <CardDescription className="text-lg sm:text-xl md:text-2xl font-bold rx-gradient-text rx-gc-green-blue mb-6">
               {bandConfig.label}
             </CardDescription>
           </CardHeader>
@@ -422,7 +422,7 @@ export default function AssessmentQuiz() {
         {/* What's Next */}
         <Card className="rx-bg-slate border rx-border-slate">
           <CardHeader>
-            <CardTitle className="text-xl sm:text-2xl font-bold mb-0">
+            <CardTitle className="text-xl sm:text-2xl font-bold mb-6">
               <span className="rx-gradient-text rx-gc-green-blue">What's Next?</span>
             </CardTitle>
           </CardHeader>
@@ -481,10 +481,10 @@ export default function AssessmentQuiz() {
       {/* Question Card */}
       <Card className="border-2 rx-border-slate mb-6 sm:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-300" role="region" aria-labelledby={`question-${currentStep}`}>
         <CardHeader className="pb-4 sm:pb-6 text-center">
-          <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-4">
+          <CardTitle id={`question-${currentStep}`} className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight mb-6">
             {currentQuestion.question}
           </CardTitle>
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-2 mb-4">
             {currentQuestion.required && (
               <span className="text-xs sm:text-sm rx-text-green font-semibold" aria-label="Required question">Required</span>
             )}
@@ -521,7 +521,7 @@ export default function AssessmentQuiz() {
                   return (
                     <div 
                       key={option.value}
-                      className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer ${
+                      className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer w-full ${
                         isSelected 
                           ? 'border-[#73B400] bg-[rgba(115,180,0,0.05)] shadow-sm' 
                           : 'rx-border-slate hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
@@ -531,7 +531,7 @@ export default function AssessmentQuiz() {
                       <RadioGroupItem 
                         value={option.value} 
                         id={option.value} 
-                        className="flex-shrink-0 mt-0.5 pointer-events-none" 
+                        className="flex-shrink-0 pointer-events-none" 
                       />
                       <Label 
                         htmlFor={option.value} 
@@ -557,7 +557,7 @@ export default function AssessmentQuiz() {
                 return (
                   <div 
                     key={option.value}
-                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer ${
+                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border-2 rx-bg-slate transition-all cursor-pointer w-full ${
                       isChecked 
                         ? 'border-[#73B400] bg-[rgba(115,180,0,0.05)] shadow-sm' 
                         : 'rx-border-slate hover:border-[rgba(115,180,0,0.5)] hover:bg-[rgba(115,180,0,0.02)]'
@@ -568,7 +568,7 @@ export default function AssessmentQuiz() {
                       id={option.value}
                       checked={isChecked}
                       onCheckedChange={(checked) => handleMultipleChoice(option.value, checked as boolean)}
-                      className="flex-shrink-0 mt-0.5 pointer-events-none"
+                      className="flex-shrink-0 pointer-events-none"
                     />
                     <Label 
                       htmlFor={option.value}
